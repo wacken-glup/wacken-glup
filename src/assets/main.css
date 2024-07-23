@@ -1,0 +1,32 @@
+@import './base.css';
+
+@media only screen and (max-width: 994px) {
+    dialog:is(.active, [open]):is(.max-s) {
+        transform: translate(0);
+    }
+    :is(dialog.max-s):not(.round) {
+        border-radius: 0;
+    }
+    dialog.max-s {
+        inset: 0 auto auto 0;
+        inline-size: 100%;
+        block-size: 100%;
+        max-inline-size: 100%;
+        max-block-size: 100%;
+        transform: translateY(4rem);
+        background-color: var(--surface);
+    }   
+}
+
+.transparent:is(:hover, :focus) > i.ignore-hover-fill:not(.fill) {
+    font-variation-settings: inherit;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}

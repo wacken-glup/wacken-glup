@@ -1,0 +1,152 @@
+{
+    "brand": {
+        "name": "Wacken GLUP",
+        "share": {
+            "invite": "Lass uns zusammen planen mit Wacken Group Line Up Planner"
+        }
+    },
+    "navigation": {
+        "overview": "Überblick",
+        "acts": "Acts",
+        "members": "Mitglieder",
+        "settings": "Einstellungen"
+    },
+    "common": {
+        "ok": "Okay",
+        "confirm": "Bestätigen",
+        "finish": "Abschließen",
+        "abort": "Abbrechen",
+        "signIn": "Anmelden",
+        "signUp": "Registrieren",
+        "logOut": "Abmelden",
+        "join": "Beitreten",
+        "name": "Name",
+        "color": "Farbe",
+        "mail": "E-Mail",
+        "mailAddress": "E-Mail Adresse",
+        "password": "Passwort",
+        "invite": "Einladen",
+        "invitationLink": "Einladungslink",
+        "leave": "Verlassen",
+        "delete": "Löschen",
+        "add": "Hinzufügen",
+        "select": "Auswählen",
+        "greeting": "Moin",
+        "anon": "Anonym",
+        "likes": "keine Likes | ein Like | {count} Likes",
+        "recommendations": "keine Vorschläge | ein Vorschlag | {count} Vorschläge",
+        "and": " & ",
+        "someone": "Jemand",
+        "liked": "Vorgemerkt",
+        "recommended": "Vorgeschlagen",
+        "details": "Details",
+        "until": "bis"
+    },
+    "join": {
+        "title": "Space beitreten",
+        "message": {
+            "generic": "{n} hat dich eingeladen, einem Space beizutreten.",
+            "specific": "{n} hat dich eingeladen, dem Space \"{s}\" beizutreten."
+        },
+        "button": {
+            "joinWithoutAccount": "Beitreten (ohne Konto)"
+        },
+        "whoAreYou": {
+            "title": "Wer bist du?",
+            "message": [
+                "Du kannst entweder dich als neue Person hinzufügen oder,",
+                "falls du dies bereits getan hast, deine bestehende Person auswählen."
+            ]
+        },
+        "dialog": {
+            "error": {
+                "title": "Fehler beim Beitreten",
+                "message": "Beim Beitreten ist ein Fehler aufgetreten:"
+            }
+        }
+    },
+    "login": {
+        "alreadyLoggedIn": "Du bist bereits angemeldet.",
+        "signIn": {
+            "message": [
+                "Melde dich an, um einen Plan zu erstellen",
+                "und ihn mit deinen Freunden zu teilen."
+            ]
+        },
+        "mail": {
+            "title": "per Mail anmelden",
+            "message": [
+                "Melde dich an, um einen Plan zu erstellen",
+                "und ihn mit deinen Freunden zu teilen."
+            ]
+        }
+    },
+    "acts": {
+        "search": {
+            "placeholder": "Nach acts suchen"
+        },
+        "filter": {
+            "onlyConcerts": {
+                "label": "Nur Konzerte",
+                "description": "Alle anderen Auftritte ausblenden"
+            },
+            "sortTime": {
+                "label": "Zeitlich sortieren",
+                "description": "Anstehende Acts oben anzeigen"
+            }
+        }
+    },
+    "members": {
+        "dialog": {
+            "removeMember": {
+                "title": "Entgültig löschen",
+                "message": "Möchtest du dieses Mitglied wirklich entfernen?"
+            }
+        }
+    },
+    "settings": {
+        "spaceSettings": {
+            "title": "Space-Einstellungen"
+        },
+        "dialog": {
+            "leaveSpace": {
+                "title": "Space verlassen",
+                "message": "Möchtest du diesen Space verlassen? Deine Daten werden gelöscht!"
+            },
+            "anonLogOut": {
+                "title": "Entgültig abmelden",
+                "message": "Wenn du dich von deinem annonymen Konto abmeldest, können die gespeicherten Daten nur über den Einladungslink verwaltet werden. Möchtest du dich dennoch abmelden? Du wirst dich nie wieder mit diesem Konto anmelden können."
+            },
+            "deleteAccount": {
+                "title": "Entgültig löschen",
+                "message": "Möchtest du deinen Account löschen? Alle Daten, die mit deinem Konto verknüpft sind werden ebenfalls gelöscht."
+            },
+            "relogin": {
+                "title": "Erneut anmelden",
+                "message": "Bitte melde dich erneut mit deinen Anmeldedaten an um deinen Account löschen zu können."
+            },
+            "invitationLink": {
+                "title": "Einladungslink teilen",
+                "message": "Über den folgenen Link können deine Freunde beitreten:"
+            }
+        }
+    },
+    "dialog": {
+        "login-needed": {
+            "title": "Anmeldung erforderlich",
+            "message": "Melde dich an oder frage nach einem Einladungslink zu einem bestehenden Space um deine Favoriten zu speichern."
+        }
+    },
+    "pwaAdvert": "Installiere die App auf deinem Homescreen",
+    "privacyPolicy": "Informationen zum Datenschutz",
+    "__comment": "LITERAL TRANSLATIONS",
+    "Monday": "Montag",
+    "Tuesday": "Dienstag",
+    "Wednesday": "Mittwoch",
+    "Thursday": "Donnerstag",
+    "Friday": "Freitag",
+    "Saturday": "Samstag",
+    "Sunday": "Sonntag",
+    "Concert": "Konzert",
+    "Spoken Word": "Rede"
+}

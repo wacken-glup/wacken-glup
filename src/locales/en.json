@@ -1,0 +1,142 @@
+{
+    "brand": {
+        "name": "Wacken GLUP",
+        "share": {
+            "invite": "Let us plan together with Wacken Group Line Up Planner"
+        }
+    },
+    "navigation": {
+        "overview": "Overview",
+        "acts": "Acts",
+        "members": "Members",
+        "settings": "Settings"
+    },
+    "common": {
+        "ok": "Okay",
+        "confirm": "Confirm",
+        "finish": "Finish",
+        "abort": "Abort",
+        "signIn": "Sign in",
+        "signUp": "Sign up",
+        "logOut": "Log out",
+        "join": "Join",
+        "name": "Name",
+        "color": "Color",
+        "mail": "Mail",
+        "mailAddress": "Mail address",
+        "password": "Password",
+        "invite": "Invite",
+        "invitationLink": "Invitation link",
+        "leave": "Leave",
+        "delete": "Delete",
+        "add": "Add",
+        "select": "Select",
+        "greeting": "Hello",
+        "anon": "Anonymous",
+        "likes": "no likes | one like | {count} likes",
+        "recommendations": "no recommendations | one recommendation | {count} recommendations",
+        "and": " & ",
+        "someone": "Someone",
+        "liked": "Liked",
+        "recommended": "Recommended",
+        "details": "Details",
+        "until": "until"
+    },
+    "join": {
+        "title": "Join space",
+        "message": {
+            "generic": "{n} has invited you to join their space.",
+            "specific": "{n} has invited you to join a space called \"{s}\"."
+        },
+        "button": {
+            "joinWithoutAccount": "Join (without Account)"
+        },
+        "whoAreYou": {
+            "title": "Who are you?",
+            "message": [
+                "You can add yourself to the members of this space",
+                "or choose an already created persona from the list."
+            ]
+        },
+        "dialog": {
+            "error": {
+                "title": "Error",
+                "message": "An error occurred whilst joining:"
+            }
+        }
+    },
+    "login": {
+        "alreadyLoggedIn": "You are already logged in.",
+        "signIn": {
+            "message": [
+                "Sign in to create and edit your plan",
+                "and share it with your friends."
+            ]
+        },
+        "mail": {
+            "title": "Login via mail",
+            "message": [
+                "Sign in to create and edit your plan",
+                "and share it with your friends."
+            ]
+        }
+    },
+    "acts": {
+        "search": {
+            "placeholder": "Search for acts"
+        },
+        "filter": {
+            "onlyConcerts": {
+                "label": "Only concerts",
+                "description": "Hide all other acts"
+            },
+            "sortTime": {
+                "label": "Sort chronological",
+                "description": "Show upcoming acts at the top"
+            }
+        }
+    },
+    "members": {
+        "dialog": {
+            "removeMember": {
+                "title": "Delete forever",
+                "message": "Do you really want to remove this member?"
+            }
+        }
+    },
+    "settings": {
+        "spaceSettings": {
+            "title": "Space settings"
+        },
+        "dialog": {
+            "leaveSpace": {
+                "title": "Leave space",
+                "message": "Du you really want to leave this space? Your data will be deleted."
+            },
+            "anonLogOut": {
+                "title": "Log out forever",
+                "message": "If you sign out of your anonymous account, your favorites can only be managed with the invitation link. Do you really want to log out? You'll never be able to log in again."
+            },
+            "deleteAccount": {
+                "title": "Delete forever",
+                "message": "Du you really want to delete your account? All data associated with your account is going to be deleted aswell."
+            },
+            "relogin": {
+                "title": "Log in again",
+                "message": "You need to log in again to be able to delete your account."
+            },
+            "invitationLink": {
+                "title": "Share invitation link",
+                "message": "Your friends can join your space with the following link:"
+            }
+        }
+    },
+    "dialog": {
+        "login-needed": {
+            "title": "Login required",
+            "message": "Log in or ask for a invitation link for an existing space to save your favorites."
+        }
+    },
+    "pwaAdvert": "Install to your homescreen",
+    "privacyPolicy": "About privacy"
+}
