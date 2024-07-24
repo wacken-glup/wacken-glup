@@ -67,6 +67,30 @@ export default class SpaceMember {
         this.update()
     }
 
+    calculateTasteMatch(against: SpaceMember): number {
+        let combinedThis = [
+            ... new Set([
+                ... this.likes,
+                ... this.suggestions
+            ])
+        ]
+
+        let combinedAgainst = [
+            ... new Set([
+                ... against.likes,
+                ... against.suggestions
+            ])
+        ]
+    
+        let lessInteractions = (combinedThis.length > combinedAgainst.length) ? combinedAgainst : combinedThis
+        let moreInteractions = (combinedThis.length > combinedAgainst.length) ? combinedThis : combinedAgainst
+
+        let score = 0
+        for(let id of lessInteractions) if(moreInteractions.includes(id)) score ++
+
+        return (score / lessInteractions.length) * 100
+    }
+
     async delete() {
         try {
             let req = await getDocs(collection(this.ctx.db, "spaces", this.space.id, "users"))

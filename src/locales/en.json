@@ -89,9 +89,6 @@
                     "title": "Save",
                     "description": "Also apply on next visit"
                 }
-            },
-            "charts": {
-                "title": "Charts"
             }
         }
     },
@@ -111,10 +108,14 @@
         }
     },
     "members": {
+        "tasteMatch": "matches {n}",
         "dialog": {
             "removeMember": {
                 "title": "Delete forever",
                 "message": "Do you really want to remove this member?"
+            },
+            "charts": {
+                "title": "Charts"
             }
         }
     },

@@ -72,7 +72,9 @@ export default {
                         <div style="padding: 40px">
                             <i class="extra" :class="[ `${ member.color }-text` ]">person</i>
                             <h5 class="center-align">{{ member.name }}</h5>
+
                             <span class="link small-text">{{ $tc("common.likes", member.likes.length) }} {{ $t("common.and") }} {{ $tc("common.recommendations", member.suggestions.length) }}</span>
+                            <span class="link small-text"><br>{{ $t("members.tasteMatch", { n: `${ member.calculateTasteMatch($client.space.self!!).toLocaleString(undefined, { maximumFractionDigits: 2 }) }%` }) }}</span>
 
                             <template v-if="$client.space.self?.isOwner() && !member.isOwner()">
                                 <div class="space"></div>
@@ -109,7 +111,7 @@ export default {
             </nav>
         </dialog>
     </main>
-    
+
     <RouteBasedMemberChartsDialog />
 </template>
 

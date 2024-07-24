@@ -108,6 +108,7 @@
         }
     },
     "members": {
+        "tasteMatch": "{n} Übereinstimmung",
         "dialog": {
             "removeMember": {
                 "title": "Entgültig löschen",
