@@ -34,8 +34,8 @@ export default {
 <template>
     <div class="overlay" :class="{ active: open }" @click="$emit('dismiss')"></div>
 
-    <dialog :class="{ active: open }" class="max-s">
-        <header>
+    <dialog :class="{ active: open }" class="max-s no-padding">
+        <header class="surface-container fixed" style="padding: 0 1rem">
             <nav>
                 <button class="circle transparent" @click="$emit('dismiss')">
                    <i>close</i>
@@ -45,33 +45,32 @@ export default {
             </nav>
         </header>
 
-        <div class="middle-align">
-            <i class="fill">favorite</i>
+        <div class="padding">
+            <div class="middle-align">
+                <i class="fill">favorite</i>
 
-            <h6 style="margin-block-start: 0; margin-left: 1rem">{{ $t("common.liked") }}</h6>
+                <h6 style="margin-block-start: 0; margin-left: 1rem">{{ $t("common.liked") }}</h6>
+            </div>
+
+            <div class="space"></div>
+
+            <template v-for="id of member.likes">
+                <EventCard :event="$client.container.eventByUid.value.get(id)" />
+            </template>
+
+            <div class="large-space"></div>
+
+            <div class="middle-align">
+                <i class="fill">thumb_up</i>
+
+                <h6 style="margin-block-start: 0; margin-left: 1rem">{{ $t("common.recommended") }}</h6>
+            </div>
+
+            <div class="space"></div>
+
+            <template v-for="id of member.suggestions">
+                <EventCard :event="$client.container.eventByUid.value.get(id)" />
+            </template>
         </div>
-
-        <div class="space"></div>
-
-        <template v-for="id of member.likes">
-            <EventCard :event="$client.container.eventByUid.value.get(id)" />
-        </template>
-
-        <div class="large-space"></div>
-
-        <div class="middle-align">
-            <i class="fill">thumb_up</i>
-
-            <h6 style="margin-block-start: 0; margin-left: 1rem">{{ $t("common.recommended") }}</h6>
-        </div>
-
-        <div class="space"></div>
-
-        <template v-for="id of member.suggestions">
-            <EventCard :event="$client.container.eventByUid.value.get(id)" />
-        </template>
-
-        <div class="large-space s"></div>
-        <div class="large-space s"></div>
     </dialog>
 </template>
