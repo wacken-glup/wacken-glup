@@ -11,10 +11,7 @@ import AdvertisePWA from "@/components/AdvertisePWA.vue"
 
 export default {
     mounted() {
-        if(this.$ctx.systemDarkMode.value) {
-            this.$ctx.darkMode.value = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
-        }     
-
+        this.checkSystemTheme()
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
             if(this.$ctx.systemDarkMode.value) this.$ctx.darkMode.value = event.matches
         })
@@ -28,9 +25,16 @@ export default {
             let mode = ui("mode")
             let color = ((ui("theme") as any)[mode as any] as string).split("--surface-container:")[1].split(";")[0]
             document.querySelector('meta[name="theme-color"]')?.setAttribute('content', color)
+        },
+        checkSystemTheme() {
+            if(!this.$ctx.systemDarkMode.value) return
+            this.$ctx.darkMode.value = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
         }
     },
     watch: {
+        "$ctx.systemDarkMode.value"() {
+            this.checkSystemTheme()
+        },
         "$ctx.darkMode.value"() {
             ui("mode", (this.$ctx.darkMode.value) ? "dark" : "light")
             this.updateThemeColor()
