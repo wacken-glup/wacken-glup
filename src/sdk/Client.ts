@@ -149,6 +149,10 @@ export default class Client {
             }
         }
 
+        this.container.stages.value.sort((a,b) => {
+            return parseInt(a.sorting) - parseInt(b.sorting)
+        })
+
         this.container.sortedEvents.push(... this.container.events.sort((a, b) => {
             return a.cardTitle().localeCompare(b.cardTitle())
         }))
