@@ -111,7 +111,7 @@ export default {
 </script>
 
 <template>
-    <AppBar label="Settings" />
+    <AppBar :label="$t('navigation.settings')" />
 
     <main class="responsive">
         <template v-if="$ctx.currentUser.value != undefined">

@@ -92,8 +92,8 @@ export default {
 </script>
 
 <template>
-    <AppBar label="Acts"></AppBar>
-    
+    <AppBar :label="$t('navigation.acts')" />
+
     <main class="responsive max">
         <div class="field large prefix round fill">
             <i class="front">search</i>

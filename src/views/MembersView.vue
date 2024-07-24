@@ -53,7 +53,7 @@ export default {
 </script>
 
 <template>
-    <AppBar label="Members">
+    <AppBar :label="$t('navigation.members')">
         <template v-slot:prepend>
             <button class="circle transparent" @click="openMemberChartsDialog()">
                 <i>stars</i>
