@@ -89,6 +89,9 @@
                     "title": "Save",
                     "description": "Also apply on next visit"
                 }
+            },
+            "charts": {
+                "title": "Charts"
             }
         }
     },

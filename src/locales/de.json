@@ -112,6 +112,9 @@
             "removeMember": {
                 "title": "Entgültig löschen",
                 "message": "Möchtest du dieses Mitglied wirklich entfernen?"
+            },
+            "charts": {
+                "title": "Charts"
             }
         }
     },

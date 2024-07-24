@@ -2,6 +2,8 @@
 import delay from "delay"
 
 import AppBar from "@/components/AppBar.vue"
+import RouteBasedMemberChartsDialog from "@/components/member/RouteBasedMemberChartsDialog.vue"
+
 import SpaceMember from "@/sdk/model/SpaceMember"
 
 export default {
@@ -30,6 +32,14 @@ export default {
                     member: member.id
                 }
             })
+        },
+        openMemberChartsDialog() {
+            this.$router.push({
+                query: {
+                    dialogMemberCharts: "true",
+                    ... this.$route.query
+                }
+            })
         }
     },
     mounted() {
@@ -38,12 +48,18 @@ export default {
             this.loaded = true
         })()  
     },
-    components: { AppBar }
+    components: { AppBar, RouteBasedMemberChartsDialog }
 }
 </script>
 
 <template>
-    <AppBar label="Members" />
+    <AppBar label="Members">
+        <template v-slot:prepend>
+            <button class="circle transparent" @click="openMemberChartsDialog()">
+                <i>stars</i>
+            </button>
+        </template>
+    </AppBar>
 
     <main class="responsive" v-if="loaded">
         <div class="middle-align center-align" style="height: 100%">
@@ -93,6 +109,8 @@ export default {
             </nav>
         </dialog>
     </main>
+    
+    <RouteBasedMemberChartsDialog />
 </template>
 
 <style>
