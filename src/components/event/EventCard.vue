@@ -33,14 +33,15 @@ export default {
             `${ 
                 (highlighted) ? 'tertiary'
                     : ($client.space?.self?.isLiked(event.data.uid)) ? 'primary' 
-                        : (event.likerIds.length > 0) ? 'surface-variant' 
-                        : (event.suggestorIds.length > 0) ? 'surface-variant' 
+                        : (event.likerIds.length > 0 || event.suggestorIds.length > 0) ? ($ctx.darkMode.value) ? 'surface-variant' : 'secondary' 
                         : 'surface-container' 
             }`
         ]"  
         @click="openDialog()">
 
+        <slot></slot>
         <img class="round" v-lazy="{ src: event.cardThumbnailUrl() }">
+
         <div class="max">
             <h6 class="small" style="display: block; text-overflow: ellipsis; word-wrap: break-word; overflow: hidden; max-height: 2.4em; line-height: 1.2em;">
                 {{ event.cardTitle() }}

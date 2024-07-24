@@ -46,7 +46,13 @@ export default {
 </script>
 
 <template>
-    <article v-if="event != undefined" class="no-padding" :class="{ secondary: event.likerIds.length > 0 || event.suggestorIds.length > 0 }">
+    <article v-if="event != undefined" class="no-padding" 
+        :class="[ 
+            ($client.space?.self?.isLiked(event.data.uid)) ? 'primary' 
+                : (event.likerIds.length > 0 || event.suggestorIds.length > 0) ? 'secondary'
+                : ''
+        ]">
+    
         <div class="absolute top right right padding white-text" style="z-index: 10">
             <button class="blur circle" @click="toggleSuggested()">
                 <i :class="{ fill: $client.space?.self?.isSuggested(event.data.uid), 'primary-text': $client.space?.self?.isSuggested(event.data.uid) }">thumb_up</i>
