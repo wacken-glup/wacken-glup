@@ -8,6 +8,10 @@ export default {
         event: {
             type: Object as PropType<WoaEventModelWrapper>,
             required: false
+        },
+        highlighted: {
+            type: Boolean,
+            default: false
         }
     },
     methods: {
@@ -27,10 +31,11 @@ export default {
         :class="
         [
             `${ 
-                ($client.space?.self?.isLiked(event.data.uid)) ? 'primary' 
-                    : (event.likerIds.length > 0) ? 'surface-variant' 
-                    : (event.suggestorIds.length > 0) ? 'surface-variant' 
-                    : 'surface-container' 
+                (highlighted) ? 'tertiary'
+                    : ($client.space?.self?.isLiked(event.data.uid)) ? 'primary' 
+                        : (event.likerIds.length > 0) ? 'surface-variant' 
+                        : (event.suggestorIds.length > 0) ? 'surface-variant' 
+                        : 'surface-container' 
             }`
         ]"  
         @click="openDialog()">

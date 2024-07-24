@@ -26,6 +26,8 @@ export default {
 <template>
     <header>
         <nav>
+            <slot name="prepend"></slot>
+
             <h5 class="max center-align">{{ label }}</h5>
 
             <button class="circle transparent" @click="toggleMode()">

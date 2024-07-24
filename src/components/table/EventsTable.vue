@@ -1,4 +1,6 @@
 <script lang="ts">
+import type { PropType } from "vue"
+
 import type { WoaFestivalDay } from "@/sdk/model/WoaModels"
 import WoaEventModelWrapper from "@/sdk/model/WoaEventModelWrapper"
 
@@ -11,6 +13,27 @@ type Column = {
 }
 
 export default {
+    props: {
+        filterStages: {
+            type: Object as PropType<number[]>,
+            default: []
+        }
+    },
+    data() {
+        return {
+            currentSec: 0,
+
+            selectedDay: undefined as WoaFestivalDay | undefined,
+            highlightedEventId: -1,
+
+            columns: [] as Column[],
+            timeCells: [] as number[],
+
+            dateWasChosen: false,
+
+            menuActive: false
+        }
+    },
     methods: {
         selectDay(day: WoaFestivalDay) {
             this.selectedDay = day
@@ -35,6 +58,8 @@ export default {
             this.columns = []
 
             for(let stage of this.$client.container.stages.value) {
+                if(this.filterStages.includes(stage.uid)) continue
+
                 let column: Column = {
                     startOffset: 0,
                     label: stage.title,
@@ -83,38 +108,62 @@ export default {
             }
         }
     },
-    data() {
-        return {
-            currentSec: 0,
-
-            selectedDay: undefined as WoaFestivalDay | undefined,
-
-            columns: [] as Column[],
-            timeCells: [] as number[],
-
-            dateWasChosen: false,
-
-            menuActive: false
-        }
-    },
     mounted() {
         let date = new Date()
         this.currentSec = date.getTime() / 1000
 
-        for(let day of this.$client.container.days.value) {
-            if(parseInt(day.end) < this.currentSec) continue
+        if(this.$route.query.eventId || this.$route.query.dayId) {
+            let festivalDayId = ( (this.$route.query.eventId) ? () => {
+                let event = this.$client.container.eventByUid.value.get(parseInt(this.$route.query.eventId as any))
+                return event?.data.festivalday.uid
+            } : () => {
+                return parseInt(this.$route.query.dayId?.toString() || "")
+            } )()
 
-            this.selectedDay = day
-            break
+            this.selectedDay = this.$client.container.days.value.find(d => d.uid == festivalDayId)
+            
+            if(this.$route.query.eventId) {
+                let event = this.$client.container.eventByUid.value.get(parseInt(this.$route.query.eventId as any))
+
+                setTimeout(() => {
+                    let elem = document.querySelector(`#event-${ event?.data.uid }`)
+                    elem?.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center",
+                        inline: "center"
+                    })
+
+                    this.highlightedEventId = event?.data.uid || -1
+                    setTimeout(() => {
+                        this.highlightedEventId = -1
+                    }, 2000)
+                }, 500)
+            }
+        }else{
+            for(let day of this.$client.container.days.value) {
+                if(parseInt(day.end) < this.currentSec) continue
+
+                this.selectedDay = day
+                break
+            }
+
+            if(this.selectedDay === undefined)
+                this.selectedDay = this.$client.container.days.value[this.$client.container.days.value.length-1]
         }
-
-        if(this.selectedDay === undefined)
-            this.selectedDay = this.$client.container.days.value[this.$client.container.days.value.length-1]
 
         this.render()
     },
     watch: {
         "selectedDay"() {
+            this.render()
+            
+            this.$router.replace({
+                query: {
+                    dayId: this.selectedDay?.uid || -1
+                }
+            })
+        },
+        "filterStages"() {
             this.render()
         }
     },
@@ -176,8 +225,13 @@ export default {
 
                     <tr>
                         <template v-for="entry in column.eventEntryByRow">
-                            <td v-if="entry != null" :colspan="entry.columnSpan" class="surface" style="min-width: 300px; position: sticky; left: 0">
-                                <EventCard style="min-width: 300px; position: sticky; left: 0" :event="entry"></EventCard>
+                            <td v-if="entry != null" :colspan="entry.columnSpan" :id="`event-${ entry.data.uid.toString() }`"
+                                class="surface" style="min-width: 300px; position: sticky; left: 0">
+
+                                <EventCard 
+                                    style="min-width: 300px; position: sticky; left: 0" 
+                                    :event="entry" :highlighted="entry.data.uid == highlightedEventId">
+                                </EventCard>
                             </td>
 
                             <td v-if="entry == null" class="surface">
