@@ -81,6 +81,17 @@
             ]
         }
     },
+    "home": {
+        "dialog": {
+            "filterStages": {
+                "title": "Filter stages",
+                "save": {
+                    "title": "Save",
+                    "description": "Also apply on next visit"
+                }
+            }
+        }
+    },
     "acts": {
         "search": {
             "placeholder": "Search for acts"

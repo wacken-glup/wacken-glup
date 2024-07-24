@@ -81,6 +81,17 @@
             ]
         }
     },
+    "home": {
+        "dialog": {
+            "filterStages": {
+                "title": "Stages filtern",
+                "save": {
+                    "title": "Speichern",
+                    "description": "Auch beim nächsten Besuch anwenden"
+                }
+            }
+        }
+    },
     "acts": {
         "search": {
             "placeholder": "Nach acts suchen"
