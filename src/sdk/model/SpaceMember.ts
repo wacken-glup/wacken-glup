@@ -77,8 +77,8 @@ export default class SpaceMember {
 
         let combinedAgainst = [
             ... new Set([
-                ... against.likes,
-                ... against.suggestions
+                ... (against?.likes || []),
+                ... (against?.suggestions || [])
             ])
         ]
     
