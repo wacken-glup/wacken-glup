@@ -8,6 +8,8 @@ import PrivacyPolicyLink from "@/components/PrivacyPolicyLink.vue"
 
 import SpaceMember from "@/sdk/model/SpaceMember"
 
+import delay from "delay"
+
 enum MemberColors {
     amber = "Amber",
     blue = "Blau",
@@ -49,6 +51,8 @@ export default {
                 error: undefined as string | undefined
             },
 
+            loaded: false,
+
             errorCode: undefined as string | undefined
         }
     },
@@ -63,7 +67,12 @@ export default {
 
         if(this.$route.query["page"] == "1") this.page = 1
 
-        this.form.name = this.$ctx.currentUser.value?.displayName || ""
+        this.form.name = this.$ctx.currentUser.value?.displayName || "";
+        
+        (async() => {
+            while(this.$client.space?.loaded != true) await delay(50)
+            this.loaded = true
+        })()
     },
     methods: {
         async join() {
@@ -183,7 +192,7 @@ export default {
                         </div>
                     </div>
 
-                    <div class="page" :class="{ active: page == 1 }">
+                    <div class="page" :class="{ active: page == 1 }" v-if="loaded">
                         <i class="extra">label</i>
                         <h5 class="center-align">{{ $t("join.whoAreYou.title") }}</h5>
                         <p>{{ $t("join.whoAreYou.message[0]") }}<br>{{ $t("join.whoAreYou.message[1]") }}</p>
@@ -238,7 +247,7 @@ export default {
                         </div>
 
                         <div v-if="$client.space != undefined" class="page right center-align" :class="{ active: secondaryPage == 1 }">
-                            <article>
+                            <article style="max-height: 50vh; overflow: scroll">
                                 <template v-for="member of ($client.space.members as any as SpaceMember[])">
                                     <a v-if="!member.isOwner()" class="row wave padding" @click="chooseMember(member)">
                                         <button class="circle" :class="[ `${ member.color }5` ]"><i style="color: black">person</i></button>
