@@ -65,9 +65,7 @@ export default {
             
             this.eventsStack = [ ...this.$client.container.events ]
             this.eventsStack = this.eventsStack.filter(e => !excludeIds.includes(e.data.uid))
-
-            this.eventsStack = this.eventsStack.slice(0, 5)
-
+            
             this.loaded = true
         })()  
     },
