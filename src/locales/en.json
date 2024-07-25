@@ -109,13 +109,13 @@
     },
     "swiper": {
         "done": {
-            "title": "no more Acts",
-            "message": "You have marked {count} Acts | You have marked one Act | You have marked {count} Acts"
+            "title": "no more acts",
+            "message": "You have marked {count} acts | You have marked one act | You have marked {count} acts"
         },
         "dialog": {
             "introduction": {
                 "title": "The swiper",
-                "message": "If you like the Act, swipe right. If you don't, swipe left."
+                "message": "If you like the act, swipe right. If you don't, swipe left."
             }
         }
     },

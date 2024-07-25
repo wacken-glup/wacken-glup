@@ -23,6 +23,7 @@ export default {
             eventsStack: [] as WoaEventModelWrapper[],
 
             rightSwipes: [] as WoaEventModelWrapper[],
+            leftSwipeIds: [] as number[],
 
             redOpacity: 0,
             greenOpacity: 0
@@ -42,6 +43,9 @@ export default {
 
                 this.rightSwipes.push(this.eventsStack[0])
                 this.$client.space?.self?.toggleSuggested(this.eventsStack[0].data.uid)
+            }else{
+                this.leftSwipeIds.push(this.eventsStack[0].data.uid)
+                this.updateLeftSwipes()
             }
 
             setTimeout(() => {
@@ -55,13 +59,19 @@ export default {
                     this.swiper.enable()
                 }
             }, 50);
+        },
+        updateLeftSwipes() {
+            localStorage.setItem("leftSwipeIds", JSON.stringify(this.leftSwipeIds))
         }
     },
     mounted() {
         (async() => {
             while(this.$client.space?.loaded != true) await delay(50)
+
+            this.leftSwipeIds = JSON.parse(localStorage.getItem("leftSwipeIds") || "[]");
+            console.info("left swipes", this.leftSwipeIds);
             
-            let excludeIds = [ ...this.$client.space!!.self!!.likes, ...this.$client.space!!.self!!.suggestions ]
+            let excludeIds = [ ... this.leftSwipeIds, ...this.$client.space!!.self!!.likes, ...this.$client.space!!.self!!.suggestions ]
             
             this.eventsStack = [ ...this.$client.container.events ]
             this.eventsStack = this.eventsStack.filter(e => !excludeIds.includes(e.data.uid))

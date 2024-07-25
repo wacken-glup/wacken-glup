@@ -94,7 +94,7 @@
     },
     "acts": {
         "search": {
-            "placeholder": "Nach acts suchen"
+            "placeholder": "Nach Acts suchen"
         },
         "filter": {
             "onlyConcerts": {
