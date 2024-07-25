@@ -107,6 +107,18 @@
             }
         }
     },
+    "swiper": {
+        "done": {
+            "title": "keine weiteren Acts",
+            "message": "Du hast {count} Acts markiert | Du hast einen Act markiert | Du hast {count} Acts markiert"
+        },
+        "dialog": {
+            "introduction": {
+                "title": "Der Swiper",
+                "message": "Wische nach rechts, wenn du den Act magst und nach links, wenn nicht."
+            }
+        }
+    },
     "members": {
         "tasteMatch": "{n} Übereinstimmung",
         "dialog": {

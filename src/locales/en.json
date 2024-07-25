@@ -107,6 +107,18 @@
             }
         }
     },
+    "swiper": {
+        "done": {
+            "title": "no more Acts",
+            "message": "You have marked {count} Acts | You have marked one Act | You have marked {count} Acts"
+        },
+        "dialog": {
+            "introduction": {
+                "title": "The swiper",
+                "message": "If you like the Act, swipe right. If you don't, swipe left."
+            }
+        }
+    },
     "members": {
         "tasteMatch": "matches {n}",
         "dialog": {

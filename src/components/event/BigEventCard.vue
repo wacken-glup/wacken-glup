@@ -11,6 +11,10 @@ export default {
         event: {
             type: Object as PropType<WoaEventModelWrapper>,
             required: true
+        },
+        notLazy: {
+            type: Boolean,
+            default: false
         }
     },
     methods: {
@@ -65,7 +69,8 @@ export default {
 
         <div @click="openDialog()" class="wave wave-big" style="cursor: pointer">
             <div>
-                <img class="responsive large" v-lazy="{ src: event.cardThumbnailUrl() }">
+                <img v-if="!notLazy" class="responsive large" v-lazy="{ src: event.cardThumbnailUrl() }">
+                <img v-if="notLazy" class="responsive large" :src="event.cardThumbnailUrl()">
 
                 <div v-if="event.suggestorIds.length > 0" class="absolute bottom left padding white-text rounded" style="z-index: 10; max-width: 50%; overflow: hidden">
                     <div class="blur small-padding" style="display: flex; flex-direction: row; flex-wrap: nowrap; overflow: hidden;">

@@ -92,7 +92,13 @@ export default {
 </script>
 
 <template>
-    <AppBar :label="$t('navigation.acts')" />
+    <AppBar :label="$t('navigation.acts')">
+        <template v-slot:prepend>
+            <button class="circle transparent" @click="$router.push('/swiper')">
+                <i>swipe</i>
+            </button>
+        </template>
+    </AppBar>
 
     <main class="responsive max">
         <div class="field large prefix round fill">
