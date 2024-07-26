@@ -32,9 +32,7 @@ export default {
 
             this.offlineCheckInterval = setInterval(async () => {
                 try {
-                    let req = await fetch(`/${ crypto.randomUUID() }`, { signal: AbortSignal.timeout(3500) })
-                    if(req.status != 200) return
-
+                    await fetch(`/${ crypto.randomUUID() }`, { signal: AbortSignal.timeout(3500) })
                     this.onlineAgain = true
                 }catch(e) {
                     console.error(e)
