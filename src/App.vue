@@ -42,6 +42,9 @@ export default {
         }
     },
     mounted() {
+        this.$ctx.darkMode.value = (localStorage.getItem("darkMode") || "false") == "true"
+        this.$ctx.systemDarkMode.value = (localStorage.getItem("systemDarkMode") || "true") == "true"
+        
         this.checkSystemTheme()
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
             if(this.$ctx.systemDarkMode.value) this.$ctx.darkMode.value = event.matches
@@ -56,10 +59,14 @@ export default {
     watch: {
         "$ctx.systemDarkMode.value"() {
             this.checkSystemTheme()
+
+            localStorage.setItem("systemDarkMode", this.$ctx.systemDarkMode.value+"")
         },
         "$ctx.darkMode.value"() {
             ui("mode", (this.$ctx.darkMode.value) ? "dark" : "light")
             this.updateThemeColor()
+
+            localStorage.setItem("darkMode", this.$ctx.darkMode.value+"")
         },
         "$client.offline.value"() {
             this.checkOffline()
