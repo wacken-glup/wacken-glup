@@ -14,12 +14,15 @@ export default class SpaceMember {
     suggestions: number[] = []
     likes: number[] = []
 
+    _data: any
+
+    offline: Boolean = false
+
     constructor(ctx: Context, space: Space, id: string, data: any) {
         this.ctx = ctx
         this.space = space
 
         this.id = id
-
         this.parseData(data)
     }
 
@@ -36,6 +39,11 @@ export default class SpaceMember {
     }
 
     toggleLike(id: number) {
+        if(this.offline) {
+            console.error("cannot execute request: member is cached")
+            return
+        }
+
         if(this.isLiked(id)) {
             this.likes = this.likes.filter(v => v !== id)
 
@@ -52,6 +60,11 @@ export default class SpaceMember {
     }
 
     toggleSuggested(id: number) {
+        if(this.offline) {
+            console.error("cannot execute request: member is cached")
+            return
+        }
+
         if(this.isSuggested(id)) {
             this.suggestions = this.suggestions.filter(v => v !== id)
 
@@ -92,6 +105,11 @@ export default class SpaceMember {
     }
 
     async delete() {
+        if(this.offline) {
+            console.error("cannot execute request: member is cached")
+            return
+        }
+
         try {
             let req = await getDocs(collection(this.ctx.db, "spaces", this.space.id, "users"))
             req.forEach(d => {
@@ -106,6 +124,11 @@ export default class SpaceMember {
     }
 
     private async update() {
+        if(this.offline) {
+            console.error("cannot execute request: member is cached")
+            return
+        }
+
         try {
             await setDoc(doc(this.ctx.db, "spaces", this.space.id, "members", this.id), {
                 name: this.name,
@@ -125,6 +148,8 @@ export default class SpaceMember {
 
         this.suggestions = data.suggestions
         this.likes = data.likes
+
+        this._data = data
     }
 
 }

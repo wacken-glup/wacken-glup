@@ -11,6 +11,7 @@ import Space from "./model/Space"
 import type { UserData } from "./model/UserData"
 
 import * as eventsDataArray from "@/assets/data/events-complete.json"
+import { CachedSpace } from "./model/CachedSpace"
 
 export default class Client {
 
@@ -19,6 +20,8 @@ export default class Client {
 
     hasSpace = ref(false)
     space: Reactive<Space> | undefined = undefined
+
+    offline = ref(false)
 
     constructor(ctx: Context) {
         this.ctx = ctx
@@ -39,6 +42,9 @@ export default class Client {
                 this.space = reactive(new Space(ctx, userData.spaceId, () => { this.leaveSpace() }))
             }catch(e) {
                 console.error("error while trying to fetch userdata", e)
+
+                if(localStorage.getItem("cachedSpace") != null) this.space = reactive(new CachedSpace(ctx, localStorage.getItem("cachedSpace")!!).space)
+                this.offline.value = true
             }
         });
     }

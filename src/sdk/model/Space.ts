@@ -1,7 +1,8 @@
 import type Context from "@/Context";
-import { getDoc, doc, collection, getDocs, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
+import { getDoc, doc, collection, onSnapshot, setDoc, updateDoc } from "firebase/firestore";
 import { reactive, ref } from "vue";
 import SpaceMember from "./SpaceMember";
+import { CachedSpace } from "./CachedSpace";
 
 export default class Space {
 
@@ -19,18 +20,23 @@ export default class Space {
     members = reactive<SpaceMember[]>([])
 
     loaded = ref<Boolean>(false)
+    cached = ref<Boolean>(false)
+
+    _selfCache: CachedSpace
 
     constructor(
         ctx: Context, 
         spaceId: string,
-        onLeave: () => void
+        onLeave: () => void,
+        skipInit: Boolean = false
     ) {
         this.ctx = ctx
         this.id = spaceId
 
         this.onLeave = onLeave
+        if(!skipInit) this.init()
 
-        this.init()
+        this._selfCache = new CachedSpace(this.ctx, this)
     }
 
     generateInvite($t: any): {
@@ -53,19 +59,12 @@ export default class Space {
         }
     }
 
-    getLikersForId(id: number, ignoreSelf: Boolean = false): SpaceMember[] {
-        return (this.members || []).filter(
-            m => m.likes.includes(id) && (!ignoreSelf || m.id != this.self.value?.id)
-        ) as any
-    }
-
-    getSuggestorsForId(id: number, ignoreSelf: Boolean = false): SpaceMember[] {
-        return (this.members || []).filter(
-            m => m.suggestions.includes(id) && (!ignoreSelf || m.id != this.self.value?.id)
-        ) as any
-    }
-
     async updateName(name: string) {
+        if(this.cached.value) {
+            console.error("cannot execute request: space is cached")
+            return
+        }
+
         try {
             await updateDoc(doc(this.ctx.db, "spaces", this.id), {
                 name: name
@@ -76,6 +75,11 @@ export default class Space {
     }
 
     async resetInvite() {
+        if(this.cached.value) {
+            console.error("cannot execute request: space is cached")
+            return
+        }
+
         try {
             await updateDoc(doc(this.ctx.db, "spaces", this.id), {
                 authKey: window.crypto.randomUUID()
@@ -148,6 +152,7 @@ export default class Space {
 
         try {
             this.self.value = this.members.find(m => m.id == this.selfMemberId) as any
+            console.info("self", this.self.value)
         }catch(e) {
             console.error(e)
         }
@@ -171,22 +176,33 @@ export default class Space {
                 m => m.name != undefined && m.color != undefined && m.likes != undefined && m.suggestions != undefined
             )  
 
-            this.members.forEach(m => {
-                this.ctx.client.container.spaceMemberById.set(m.id, m)
-            })
-
-            for(let event of this.ctx.client.container.events) {
-                event.suggestorIds = this.members.filter(m => m.suggestions.includes(event.data.uid)).map(m => m.id)
-                event.likerIds = this.members.filter(m => m.likes.includes(event.data.uid)).map(m => m.id)
-            }
-
+            this.publishMembersToContainer()
             this.loaded.value = true
+
+            this.updateCache()
         })
+    }
+
+    publishMembersToContainer() {
+        this.members.forEach(m => {
+            this.ctx.client.container.spaceMemberById.set(m.id, m)
+        })
+
+        for(let event of this.ctx.client.container.events) {
+            event.suggestorIds = this.members.filter(m => m.suggestions.includes(event.data.uid)).map(m => m.id)
+            event.likerIds = this.members.filter(m => m.likes.includes(event.data.uid)).map(m => m.id)
+        }
     }
 
     private parseData(data: any) {
         this.name = data.name
         this.authKey = data.authKey
+
+        this.updateCache()
+    }
+
+    private updateCache() {
+        localStorage.setItem("cachedSpace", this._selfCache.serialize())
     }
 
 }

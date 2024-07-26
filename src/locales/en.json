@@ -5,6 +5,14 @@
             "invite": "Let us plan together with Wacken Group Line Up Planner"
         }
     },
+    "app": {
+        "offline": {
+            "message": "You are offline. No changes can be made.",
+            "onlineAgain": {
+                "message": "You are back online. Click me to reload."
+            }
+        }
+    },
     "navigation": {
         "overview": "Overview",
         "acts": "Acts",

@@ -10,15 +10,11 @@ import RouteBasedMemberDetailsDialog from "@/components/member/RouteBasedMemberD
 import AdvertisePWA from "@/components/AdvertisePWA.vue"
 
 export default {
-    mounted() {
-        this.checkSystemTheme()
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-            if(this.$ctx.systemDarkMode.value) this.$ctx.darkMode.value = event.matches
-        })
-
-        setTimeout(() => {
-            this.updateThemeColor()
-        }, 50)
+    data() {
+        return {
+            offlineCheckInterval: 0,
+            onlineAgain: false
+        }
     },
     methods: {
         updateThemeColor() {
@@ -29,7 +25,33 @@ export default {
         checkSystemTheme() {
             if(!this.$ctx.systemDarkMode.value) return
             this.$ctx.darkMode.value = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        },
+        checkOffline() {
+            clearInterval(this.offlineCheckInterval)
+            if(!this.$client.offline.value) return
+
+            this.offlineCheckInterval = setInterval(async () => {
+                let req = await fetch(`/${ crypto.randomUUID() }`, { signal: AbortSignal.timeout(3500) })
+                if(req.status != 200) return
+
+                this.onlineAgain = true
+            }, 4000)
+        },
+        reloadPage() {
+            window.location.reload()
         }
+    },
+    mounted() {
+        this.checkSystemTheme()
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if(this.$ctx.systemDarkMode.value) this.$ctx.darkMode.value = event.matches
+        })
+
+        setTimeout(() => {
+            this.updateThemeColor()
+        }, 50)
+
+        this.checkOffline()
     },
     watch: {
         "$ctx.systemDarkMode.value"() {
@@ -38,6 +60,9 @@ export default {
         "$ctx.darkMode.value"() {
             ui("mode", (this.$ctx.darkMode.value) ? "dark" : "light")
             this.updateThemeColor()
+        },
+        "$client.offline.value"() {
+            this.checkOffline()
         }
     },
     components: { Navigation, LoginView, RouteBasedEventDetailsDialog, RouteBasedMemberDetailsDialog, AdvertisePWA }
@@ -79,5 +104,15 @@ export default {
         </dialog>
         
         <AdvertisePWA />
+
+        <div class="snackbar green center-align" :class="{ active: $client.offline.value && onlineAgain }" @click="reloadPage()">
+            <i>globe</i>
+            <div>{{ $t("app.offline.onlineAgain.message") }}</div>
+        </div>
+
+        <div class="snackbar primary center-align" :class="{ active: $client.offline.value && !onlineAgain }">
+            <i>offline_bolt</i>
+            <div>{{ $t("app.offline.message") }}</div>
+        </div>
     </template>
 </template>
