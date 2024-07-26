@@ -22,6 +22,7 @@ export default class Context {
     systemDarkMode = ref<Boolean>(true)
 
     loaded = ref<Boolean>(false)
+    authLoaded = ref<Boolean>(false)
 
     constructor(fbApp: FirebaseApp) {
         this.auth = getAuth(fbApp)
@@ -32,7 +33,7 @@ export default class Context {
             this.currentUser.value = user || undefined
 
             await delay(50)
-            this.loaded.value = true
+            this.authLoaded.value = true
         });
     }
 

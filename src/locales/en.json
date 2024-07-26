@@ -8,6 +8,9 @@
     "app": {
         "offline": {
             "message": "You are offline. No changes can be made.",
+            "ready": {
+                "message": "The app can now work offline."
+            },
             "onlineAgain": {
                 "message": "You are back online. Click me to reload."
             }

@@ -31,10 +31,14 @@ export default {
             if(!this.$client.offline.value) return
 
             this.offlineCheckInterval = setInterval(async () => {
-                let req = await fetch(`/${ crypto.randomUUID() }`, { signal: AbortSignal.timeout(3500) })
-                if(req.status != 200) return
+                try {
+                    let req = await fetch(`/${ crypto.randomUUID() }`, { signal: AbortSignal.timeout(3500) })
+                    if(req.status != 200) return
 
-                this.onlineAgain = true
+                    this.onlineAgain = true
+                }catch(e) {
+                    console.error(e)
+                }
             }, 4000)
         },
         reloadPage() {
@@ -70,6 +74,13 @@ export default {
         },
         "$client.offline.value"() {
             this.checkOffline()
+        },
+        "showOfflineReadyToast.value"() {
+            if(!this.showOfflineReadyToast.value) return
+
+            setTimeout(() => {
+                this.showOfflineReadyToast.value = false
+            }, 4000)
         }
     },
     components: { Navigation, LoginView, RouteBasedEventDetailsDialog, RouteBasedMemberDetailsDialog, AdvertisePWA }
@@ -120,6 +131,11 @@ export default {
         <div class="snackbar primary center-align" :class="{ active: $client.offline.value && !onlineAgain }">
             <i>offline_bolt</i>
             <div>{{ $t("app.offline.message") }}</div>
+        </div>
+
+        <div class="snackbar secondary center-align" :class="{ active: showOfflineReadyToast.value }" @click="showOfflineReadyToast.value = false">
+            <i>offline_bolt</i>
+            <div>{{ $t("app.offline.ready.message") }}</div>
         </div>
     </template>
 </template>

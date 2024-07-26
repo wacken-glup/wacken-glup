@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
+
 import HomeView from '../views/HomeView.vue'
+import ActsView from '../views/ActsView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,7 +18,7 @@ const router = createRouter({
     {
       path: '/acts',
       name: 'acts',
-      component: () => import('../views/ActsView.vue'),
+      component: ActsView,
       meta: {
         navId: "acts",
         requiresAuth: false

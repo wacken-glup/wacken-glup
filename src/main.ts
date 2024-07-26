@@ -10,6 +10,8 @@ import { createApp, ref, type Ref } from 'vue'
 import VueQrcode from '@chenfengyuan/vue-qrcode';
 import VueLazyload from 'vue3-lazyload';
 
+import { registerSW } from 'virtual:pwa-register'
+
 import Client from '@/sdk/Client'
 import Context from './Context';
 
@@ -42,7 +44,8 @@ declare module 'vue' {
     interface ComponentCustomProperties {
         $client: Client,
         $ctx: Context,
-        openLoginNeededDialog: Ref<Boolean>
+        openLoginNeededDialog: Ref<Boolean>,
+        showOfflineReadyToast: Ref<Boolean>,
     }
 }
 
@@ -61,6 +64,7 @@ const client = new Client(context)
 app.config.globalProperties.$client = client
 app.config.globalProperties.$ctx = context
 app.config.globalProperties.openLoginNeededDialog = ref(false)
+app.config.globalProperties.showOfflineReadyToast = ref(false)
 client.fetchEvents()
 
 app.use(i18n)
@@ -70,3 +74,9 @@ app.use(VueLazyload, { })
 app.component(VueQrcode.name || "", VueQrcode)
 
 app.mount('body')
+
+if ("serviceWorker" in navigator) {
+    registerSW({ immediate: true, onOfflineReady() {
+        app.config.globalProperties.showOfflineReadyToast.value = true
+    } })
+}

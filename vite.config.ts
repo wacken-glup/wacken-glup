@@ -1,4 +1,4 @@
-import { fileURLToPath, resolve, URL } from 'node:url'
+import { fileURLToPath, URL } from 'node:url'
 
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
@@ -13,14 +13,18 @@ export default defineConfig({
     vueJsx(),
     VitePWA({ 
       registerType: 'autoUpdate',
-      injectRegister: 'auto',
+      injectRegister: null,
       manifest: {
         name: "Wacken GLUP",
         short_name: "Wacken GLUP",
         description: "An application to share your favorite acts with your group",
         background_color: "#181211",
         theme_color: "#181211"
-      }
+      },
+      workbox: {
+        globPatterns: ['**/*'],
+      },
+      includeAssets: ['**/*'],
     })
   ],
   resolve: {

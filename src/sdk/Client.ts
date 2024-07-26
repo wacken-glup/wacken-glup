@@ -10,7 +10,6 @@ import type { WoaEvent } from "./model/WoaModels"
 import Space from "./model/Space"
 import type { UserData } from "./model/UserData"
 
-import * as eventsDataArray from "@/assets/data/events-complete.json"
 import { CachedSpace } from "./model/CachedSpace"
 
 export default class Client {
@@ -120,12 +119,14 @@ export default class Client {
         await this.ctx.currentUser.value?.delete()
     }
 
-    fetchEvents() {
-        let festivalDayUids: Number[] = []
-        let stageUids: Number[] = []
+    async fetchEvents() {
+        let festivalDayUids: Number[] = [];
+        let stageUids: Number[] = [];
+
+        const eventsComplete = await import("@/assets/data/events-complete.json")
 
         this.container.events = reactive([])
-        for(let event of (eventsDataArray as any).default) {
+        for(let event of eventsComplete.default) {
             let model = new WoaEventModelWrapper(event as WoaEvent)
             this.container.events.push(model)
 
@@ -162,6 +163,15 @@ export default class Client {
         this.container.sortedEvents.push(... this.container.events.sort((a, b) => {
             return a.cardTitle().localeCompare(b.cardTitle())
         }))
+
+        /* set loading state */
+        if(this.ctx.authLoaded.value) {
+            this.ctx.loaded.value = true
+        }else{
+            this.ctx.auth.onAuthStateChanged((_) => {
+                this.ctx.loaded.value = true
+            })
+        }
     }
 
 }

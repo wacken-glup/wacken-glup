@@ -8,6 +8,9 @@
     "app": {
         "offline": {
             "message": "Du bist offline, keine Änderungen werden übernommen.",
+            "ready": {
+                "message": "Die App funktioniert nun auch offline."
+            },
             "onlineAgain": {
                 "message": "Du bist wieder online. Klicke, um neu zu laden."
             }
