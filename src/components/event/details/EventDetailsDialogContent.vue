@@ -92,7 +92,7 @@ export default {
 
         <div class="space"></div>
 
-        <template v-if="($client.space?.getLikersForId(event.data.uid).length || 0) > 0">
+        <template v-if="event.likerIds.length > 0">
             <div class="padding">
                 <div class="middle-align">
                     <i class="fill">favorite</i>
@@ -103,8 +103,8 @@ export default {
                 <div class="space"></div>
 
                 <div style="display: flex; flex-direction: row; flex-wrap: wrap; gap: 8px">
-                    <template v-for="member of $client.space?.getLikersForId(event.data.uid)">
-                        <a class="chip no-border" :class="[ `${ member.color }4` ]" :style="{ margin: 0, color: 'black' }">{{ member.name }}</a>
+                    <template v-for="memberId of event.likerIds">
+                        <a class="chip no-border" :class="[ `${ $client.container.spaceMemberById.get(memberId)?.color }4` ]" :style="{ margin: 0, color: 'black' }">{{ $client.container.spaceMemberById.get(memberId)?.name }}</a>
                     </template>
                 </div>
             </div>
@@ -112,7 +112,7 @@ export default {
             <div class="space"></div>
         </template>
 
-        <template v-if="($client.space?.getSuggestorsForId(event.data.uid).length || 0) > 0">
+        <template v-if="event.suggestorIds.length > 0">
             <div class="padding">
                 <div class="middle-align">
                     <i class="fill">thumb_up</i>
@@ -123,8 +123,8 @@ export default {
                 <div class="space"></div>
 
                 <div style="display: flex; flex-direction: row; flex-wrap: wrap; gap: 8px">
-                    <template v-for="member of $client.space?.getSuggestorsForId(event.data.uid)">
-                        <a class="chip no-border" :class="[ `${ member.color }4` ]" :style="{ margin: 0, color: 'black' }">{{ member.name }}</a>
+                    <template v-for="memberId of event.suggestorIds">
+                        <a class="chip no-border" :class="[ `${ $client.container.spaceMemberById.get(memberId)?.color }4` ]" :style="{ margin: 0, color: 'black' }">{{ $client.container.spaceMemberById.get(memberId)?.name }}</a>
                     </template>
                 </div>
             </div>
