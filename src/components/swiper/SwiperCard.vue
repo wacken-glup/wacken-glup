@@ -1,25 +1,25 @@
 <script lang="ts">
 import type { PropType } from 'vue'
-import WoaEventModelWrapper from "@/sdk/model/WoaEventModelWrapper"
+import BaseCardDataModel from "@/sdk/model/BaseCardDataModel"
 
-import EventDetailsDialogContent from "@/components/event/details/EventDetailsDialogContent.vue"
+import ActDetailsDialogContent from "@/components/act/details/ActDetailsDialogContent.vue"
 
 export default {
     props: {
-        event: {
-            type: Object as PropType<WoaEventModelWrapper>,
+        model: {
+            type: Object as PropType<BaseCardDataModel>,
             required: true
         }
     },
-    components: { EventDetailsDialogContent }
+    components: { ActDetailsDialogContent }
 }
 </script>
 
 <template>
-    <div style="overflow: scroll">    
-        <img class="responsive large absolute top right" :src="event.cardThumbnailUrl()">
-        <img class="responsive large" style="opacity: 0" :src="event.cardThumbnailUrl() || '/'">
+    <div style="overflow: scroll">
+        <img class="responsive large absolute top right" :src="model.cardThumbnailUrl()">
+        <img class="responsive large" style="opacity: 0" :src="model.cardThumbnailUrl() || '/'">
 
-        <EventDetailsDialogContent :event="event" :lock-spotify="true" style="margin-top: -112px" />              
+        <ActDetailsDialogContent :model="model" :lock-spotify="true" style="margin-top: -112px" />              
     </div>
 </template>

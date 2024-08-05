@@ -74,7 +74,7 @@ export default {
                             <h5 class="center-align">{{ member.name }}</h5>
 
                             <span class="link small-text">{{ $tc("common.likes", member.likes.length) }} {{ $t("common.and") }} {{ $tc("common.recommendations", member.suggestions.length) }}</span>
-                            <span class="link small-text"><br>{{ $t("members.tasteMatch", { n: `${ member.calculateTasteMatch($client.space.self!!).toLocaleString(undefined, { maximumFractionDigits: 2 }) }%` }) }}</span>
+                            <span v-if="!isNaN(member.calculateTasteMatch($client.space.self!!))" class="link small-text"><br>{{ $t("members.tasteMatch", { n: `${ member.calculateTasteMatch($client.space.self!!).toLocaleString(undefined, { maximumFractionDigits: 2 }) }%` }) }}</span>
 
                             <template v-if="$client.space.self?.isOwner() && !member.isOwner()">
                                 <div class="space"></div>

@@ -11,8 +11,8 @@ export default class SpaceMember {
     name: string = ""
     color: string = ""
 
-    suggestions: number[] = []
-    likes: number[] = []
+    suggestions: string[] = []
+    likes: string[] = []
 
     _data: any
 
@@ -30,15 +30,15 @@ export default class SpaceMember {
         return this.id == this.space.id
     }
 
-    isLiked(id: number) {
+    isLiked(id: string) {
         return this.likes.includes(id)
     }
 
-    isSuggested(id: number) {
+    isSuggested(id: string) {
         return this.suggestions.includes(id)
     }
 
-    toggleLike(id: number) {
+    toggleLike(id: string) {
         if(this.offline) {
             console.error("cannot execute request: member is cached")
             return
@@ -47,19 +47,19 @@ export default class SpaceMember {
         if(this.isLiked(id)) {
             this.likes = this.likes.filter(v => v !== id)
 
-            this.ctx.client.container.eventByUidNonRef.get(id)!!.likerIds
-                = this.ctx.client.container.eventByUidNonRef.get(id)!!.likerIds.filter(v => v !== this.id)
+            this.ctx.client.container.actByUidNonRef.get(id)!!.likerIds
+                = this.ctx.client.container.actByUidNonRef.get(id)!!.likerIds.filter(v => v !== this.id)
         }else{
             this.likes.push(id)
 
-            this.ctx.client.container.eventByUidNonRef.get(id)
+            this.ctx.client.container.actByUidNonRef.get(id)
                 ?.likerIds.push(this.id)
         }
 
         this.update()
     }
 
-    toggleSuggested(id: number) {
+    toggleSuggested(id: string) {
         if(this.offline) {
             console.error("cannot execute request: member is cached")
             return
@@ -68,12 +68,12 @@ export default class SpaceMember {
         if(this.isSuggested(id)) {
             this.suggestions = this.suggestions.filter(v => v !== id)
 
-            this.ctx.client.container.eventByUidNonRef.get(id)!!.suggestorIds
-                = this.ctx.client.container.eventByUidNonRef.get(id)!!.suggestorIds.filter(v => v !== this.id)
+            this.ctx.client.container.actByUidNonRef.get(id)!!.suggestorIds
+                = this.ctx.client.container.actByUidNonRef.get(id)!!.suggestorIds.filter(v => v !== this.id)
         }else{
             this.suggestions.push(id)
 
-            this.ctx.client.container.eventByUidNonRef.get(id)
+            this.ctx.client.container.actByUidNonRef.get(id)
                 ?.suggestorIds.push(this.id)
         }
 
@@ -146,8 +146,15 @@ export default class SpaceMember {
         this.name = data.name
         this.color = data.color
 
-        this.suggestions = data.suggestions
-        this.likes = data.likes
+        if(this.ctx.client.container.festival.value?.uid === undefined) {
+            this.suggestions = data.suggestions
+            this.likes = data.likes    
+        }else{
+            this.suggestions = data.suggestions?.filter?.((id: string) => (id+"").startsWith(`y${ this.ctx.client.container.festival.value?.uid }`)) || data.suggestions
+            this.likes = data.likes?.filter?.((id: string) => (id+"").startsWith(`y${ this.ctx.client.container.festival.value?.uid }`)) || data.likes
+        }
+
+        // TODO: add all events to suggestions/likes that contain suggested/liked bands
 
         this._data = data
     }

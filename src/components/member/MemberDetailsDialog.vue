@@ -1,7 +1,7 @@
 <script lang="ts">
 import type { PropType } from 'vue'
 
-import EventCard from "@/components/event/EventCard.vue"
+import ActCard from "@/components/act/ActCard.vue"
 
 import SpaceMember from "@/sdk/model/SpaceMember"
 
@@ -13,21 +13,8 @@ export default {
             required: true
         }
     },
-    methods: {
-        update() {
-            
-        }
-    },
-    mounted() {
-        this.update()  
-    },
-    watch: {
-        event() {
-            this.update()
-        }
-    },
     emits: [ "dismiss" ],
-    components: { EventCard }
+    components: { ActCard }
 }
 </script>
 
@@ -55,7 +42,7 @@ export default {
             <div class="space"></div>
 
             <template v-for="id of member.likes">
-                <EventCard :event="$client.container.eventByUid.value.get(id)" />
+                <ActCard :model="$client.container.actByUid.value.get(id)" />
             </template>
 
             <div class="large-space"></div>
@@ -69,7 +56,7 @@ export default {
             <div class="space"></div>
 
             <template v-for="id of member.suggestions">
-                <EventCard :event="$client.container.eventByUid.value.get(id)" />
+                <ActCard :model="$client.container.actByUid.value.get(id)" />
             </template>
         </div>
     </dialog>

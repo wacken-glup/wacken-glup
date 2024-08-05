@@ -15,7 +15,7 @@ export default {
             this.$router.push({
                 path: "/",
                 query: {
-                    eventId: this.event.data.uid.toString()
+                    eventId: this.event.uid
                 }
             })
         }

@@ -2,7 +2,7 @@
     "brand": {
         "name": "Wacken GLUP",
         "share": {
-            "invite": "Lass uns zusammen planen mit Wacken Group Line Up Planner"
+            "invite": "Lass uns zusammen planen mit Wacken Group Line Up Planner!"
         }
     },
     "app": {
@@ -13,6 +13,9 @@
             },
             "onlineAgain": {
                 "message": "Du bist wieder online. Klicke, um neu zu laden."
+            },
+            "button": {
+                "message": "Offline anschauen? Klicke auf mich."
             }
         }
     },
@@ -51,7 +54,8 @@
         "liked": "Vorgemerkt",
         "recommended": "Vorgeschlagen",
         "details": "Details",
-        "until": "bis"
+        "until": "bis",
+        "showActs": "Acts anzeigen"
     },
     "join": {
         "title": "Space beitreten",
@@ -93,6 +97,10 @@
         }
     },
     "home": {
+        "runningOrderInactive": {
+            "title": "keine Running Order",
+            "message": "Die Running Order wurde noch nicht bekannt gegeben."
+        },
         "dialog": {
             "filterStages": {
                 "title": "Stages filtern",
@@ -116,7 +124,8 @@
                 "label": "Zeitlich sortieren",
                 "description": "Anstehende Acts oben anzeigen"
             }
-        }
+        },
+        "results": "{count} Ergebnisse"
     },
     "swiper": {
         "done": {

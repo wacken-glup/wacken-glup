@@ -4,7 +4,7 @@ import { RouterView } from 'vue-router'
 import Navigation from './components/nav/Navigation.vue'
 import LoginView from './views/LoginView.vue'
 
-import RouteBasedEventDetailsDialog from "@/components/event/RouteBasedEventDetailsDialog.vue"
+import RouteBasedActDetailsDialog from "@/components/act/RouteBasedActDetailsDialog.vue"
 import RouteBasedMemberDetailsDialog from "@/components/member/RouteBasedMemberDetailsDialog.vue"
 
 import AdvertisePWA from "@/components/AdvertisePWA.vue"
@@ -13,7 +13,9 @@ export default {
     data() {
         return {
             offlineCheckInterval: 0,
-            onlineAgain: false
+            onlineAgain: false,
+
+            toggleOfflineSnackbar: false
         }
     },
     methods: {
@@ -81,13 +83,18 @@ export default {
             }, 4000)
         }
     },
-    components: { Navigation, LoginView, RouteBasedEventDetailsDialog, RouteBasedMemberDetailsDialog, AdvertisePWA }
+    components: { Navigation, LoginView, RouteBasedActDetailsDialog, RouteBasedMemberDetailsDialog, AdvertisePWA }
 }
 </script>
 
 <template>
-    <main v-if="!$ctx.loaded.value" class="max responsive center-align middle-align">
+    <main v-if="!$ctx.loaded.value" class="max responsive center-align middle-align flex column">
         <progress style="max-width: 300px"></progress>
+
+        <div class="snackbar primary center-align error" :class="{ active: $ctx.showOfflineButton.value }" @click="$client.activateOfflineMode()">
+            <i>offline_bolt</i>
+            <div>{{ $t("app.offline.button.message") }}</div>
+        </div>
     </main>
 
     <template v-if="$ctx.loaded.value">
@@ -101,7 +108,7 @@ export default {
             <LoginView />
         </template>
 
-        <RouteBasedEventDetailsDialog />
+        <RouteBasedActDetailsDialog />
         <RouteBasedMemberDetailsDialog />
 
         <div class="overlay" :class="{ active: openLoginNeededDialog.value }" @click="openLoginNeededDialog.value = false"></div>
@@ -126,7 +133,11 @@ export default {
             <div>{{ $t("app.offline.onlineAgain.message") }}</div>
         </div>
 
-        <div class="snackbar primary center-align" :class="{ active: $client.offline.value && !onlineAgain }">
+        <div class="snackbar primary center-align error" :class="{ active: $client.offline.value && !onlineAgain && !toggleOfflineSnackbar }" @click="toggleOfflineSnackbar = true">
+            <i>offline_bolt</i>
+            <div>{{ $t("app.offline.message") }}</div>
+        </div>
+        <div class="snackbar primary center-align error top" :class="{ active: $client.offline.value && !onlineAgain && toggleOfflineSnackbar }" @click="toggleOfflineSnackbar = false">
             <i>offline_bolt</i>
             <div>{{ $t("app.offline.message") }}</div>
         </div>

@@ -6,7 +6,9 @@ import type Context from "@/Context"
 import Container from "./Container"
 
 import WoaEventModelWrapper from "./model/WoaEventModelWrapper"
+import WoaBandModelWrapper from "./model/WoaBandModelWrapper"
 import type { WoaEvent } from "./model/WoaModels"
+
 import Space from "./model/Space"
 import type { UserData } from "./model/UserData"
 
@@ -26,12 +28,20 @@ export default class Client {
         this.ctx = ctx
         this.ctx.client = this
 
+        setTimeout(() => {
+            this.ctx.showOfflineButton.value = true
+        }, 1500)
+
         this.ctx.auth.onAuthStateChanged(async (user) => {
             if(user == null) return
 
             // request user data
             try {
                 let userData = await this.getUserData()
+
+                if(this.offline.value == true) return
+                this.ctx.showOfflineButton.value = false
+
                 if(ctx.dontAutoCreateSpace !== true) if(userData == undefined || userData.spaceId == undefined) {
                     await this.createSpace()
                     return
@@ -41,12 +51,19 @@ export default class Client {
                 this.space = reactive(new Space(ctx, userData.spaceId, () => { this.leaveSpace() }))
             }catch(e) {
                 console.error("error while trying to fetch userdata", e)
-
-                if(localStorage.getItem("cachedSpace") != null) this.space = reactive(new CachedSpace(ctx, localStorage.getItem("cachedSpace")!!).space)
-                this.offline.value = true
+                this.activateOfflineMode()
             }
         });
     }
+
+    activateOfflineMode() {
+        this.ctx.loaded.value = true
+
+        if(localStorage.getItem("cachedSpace") != null) this.space = reactive(new CachedSpace(this.ctx, localStorage.getItem("cachedSpace")!!).space)
+        this.offline.value = true
+    }
+
+    /* database stuff */
 
     async setUserData(userData: UserData) {
         await setDoc(doc(this.ctx.db, "users", this.ctx.currentUser.value!!.uid), {
@@ -119,6 +136,31 @@ export default class Client {
         await this.ctx.currentUser.value?.delete()
     }
 
+    /* woa data stuff */
+
+    async fetchAll() {
+        await this.fetchBands()
+        await this.fetchEvents()
+
+        this.container.combinedActs.push(... this.container.events)
+        
+        let includedArtistUids = this.container.events.flatMap(e => e.data.artists.map(a => a.uid))
+        this.container.combinedActs.push(... this.container.bands.filter(b => { return !includedArtistUids.includes(b.data.artist.uid) }))
+
+        this.container.combinedActs.sort((a, b) => {
+            return a.cardTitle().localeCompare(b.cardTitle())
+        })
+
+        // set loading state
+        if(this.ctx.authLoaded.value) {
+            this.ctx.loaded.value = true
+        }else{
+            this.ctx.auth.onAuthStateChanged((_) => {
+                this.ctx.loaded.value = true
+            })
+        }
+    }
+
     async fetchEvents() {
         let festivalDayUids: Number[] = [];
         let stageUids: Number[] = [];
@@ -127,11 +169,16 @@ export default class Client {
 
         this.container.events = reactive([])
         for(let event of eventsComplete.default) {
+            if(event.festival.uid !== this.ctx.currentFestivalUid) continue
+
             let model = new WoaEventModelWrapper(event as WoaEvent)
             this.container.events.push(model)
 
-            this.container.eventByUid.value.set(model.data.uid, model)
-            this.container.eventByUidNonRef.set(model.data.uid, model)
+            this.container.eventByUid.value.set(model.uid, model)
+            this.container.eventByUidNonRef.set(model.uid, model)
+
+            this.container.actByUid.value.set(model.uid, model)
+            this.container.actByUidNonRef.set(model.uid, model)
 
             if(!festivalDayUids.includes(model.data.festivalday.uid)) {
                 this.container.days.value.push(model.data.festivalday)
@@ -154,6 +201,9 @@ export default class Client {
                 this.container.stages.value.push(model.data.stage)
                 stageUids.push(model.data.stage.uid)   
             }
+
+            let festival = event.artists[0]?.assets[0]?.festival
+            if(festival != undefined) this.container.festival.value = festival
         }
 
         this.container.stages.value.sort((a,b) => {
@@ -163,14 +213,22 @@ export default class Client {
         this.container.sortedEvents.push(... this.container.events.sort((a, b) => {
             return a.cardTitle().localeCompare(b.cardTitle())
         }))
+    }
 
-        /* set loading state */
-        if(this.ctx.authLoaded.value) {
-            this.ctx.loaded.value = true
-        }else{
-            this.ctx.auth.onAuthStateChanged((_) => {
-                this.ctx.loaded.value = true
-            })
+    async fetchBands() {
+        const bands = await import("@/assets/data/bands.json")
+
+        this.container.events = reactive([])
+        for(let band of bands.default) {
+            if(band.festival.uid !== this.ctx.currentFestivalUid) continue
+
+            let model = new WoaBandModelWrapper(band as any)
+            this.container.bands.push(model)
+
+            this.container.actByUid.value.set(model.uid, model)
+            this.container.actByUidNonRef.set(model.uid, model)
+
+            this.container.festival.value = band.festival as any
         }
     }
 

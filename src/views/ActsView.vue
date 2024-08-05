@@ -1,10 +1,11 @@
 <script lang="ts">
 import AppBar from "@/components/AppBar.vue"
-import BigEventCard from "@/components/event/BigEventCard.vue"
+import BigActCard from "@/components/act/BigActCard.vue"
 
 import delay from "delay"
 import Fuse from "fuse.js"
 
+import BaseCardDataModel from "@/sdk/model/BaseCardDataModel"
 import WoaEventModelWrapper from "@/sdk/model/WoaEventModelWrapper"
 
 export default {
@@ -13,7 +14,7 @@ export default {
             query: "",
             queryTimeout: 0,
 
-            queryResults: undefined as WoaEventModelWrapper[] | undefined,
+            queryResults: undefined as BaseCardDataModel[] | undefined,
             resultsShown: 10,
 
             onlyConcerts: false,
@@ -23,17 +24,17 @@ export default {
     methods: {
         processQuery() {
             if(this.query.length < 2) {
-                this.queryResults = [ ... this.$client.container.sortedEvents ]
+                this.queryResults = [ ... this.$client.container.combinedActs ]
                 if(this.sortTime) this.sortQueryResultsAfterTime()
                 return
             }
 
-            const fuse = new Fuse(this.$client.container.sortedEvents, { keys: [ "_cardTitle" ], includeScore: true })
+            const fuse = new Fuse(this.$client.container.combinedActs, { keys: [ "_cardTitle" ], includeScore: true })
             
             this.queryResults = []
             for(let obj of fuse.search(this.query)) {
                 if((obj.score || 0) > 0.5) continue
-                this.queryResults.push(obj.item)
+                this.queryResults.push(obj.item as any)
             }
 
             if(this.sortTime) this.sortQueryResultsAfterTime()
@@ -41,8 +42,8 @@ export default {
         sortQueryResultsAfterTime() {
             let unixS = new Date().getTime() / 1000
 
-            this.queryResults = this.queryResults?.filter(m => m.end > unixS)
-            this.queryResults?.sort((a,b) => a.start - b.start)
+            this.queryResults = this.queryResults?.filter(m => (m instanceof WoaEventModelWrapper) ? m.end > unixS : true)
+            this.queryResults?.sort((a,b) => (a instanceof WoaEventModelWrapper && b instanceof WoaEventModelWrapper) ? a.start - b.start : 0)
         },
         async showMore() {
             if(this.resultsShown > (this.queryResults?.length || Infinity)) return
@@ -82,12 +83,9 @@ export default {
         },
         sortTime() {
             this.processQuery()
-        },
-        "$refs.grid-end"() {
-            console.log("chnges")
         }
     },
-    components: { AppBar, BigEventCard }
+    components: { AppBar, BigActCard }
 }
 </script>
 
@@ -138,11 +136,15 @@ export default {
             </nav>
         </div>
 
+        <div class="flex right-align">
+            <span style="margin-right: 16px">{{ $tc("acts.results", queryResults?.length || 0) }}</span>
+        </div>
+
         <div class="grid">
             <template v-for="index in queryResults?.length">
                 <template v-if="index < resultsShown">
                     <div v-if="!onlyConcerts || queryResults!![index-1]!!.isConcert()" class="s12 m6 l4">
-                        <BigEventCard :event="queryResults!![index-1]!!" />
+                        <BigActCard :model="queryResults!![index-1]!!" />
                     </div>
 
                     <span v-if="index == resultsShown - 4" ref="grid-end"></span>

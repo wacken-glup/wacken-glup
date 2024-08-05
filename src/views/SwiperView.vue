@@ -1,7 +1,8 @@
 <script lang="ts">
-import WoaEventModelWrapper from "@/sdk/model/WoaEventModelWrapper"
-
 import SwiperCard from "@/components/swiper/SwiperCard.vue"
+
+import BaseCardDataModel from "@/sdk/model/BaseCardDataModel"
+import WoaEventModelWrapper from "@/sdk/model/WoaEventModelWrapper"
 
 import { Swiper, SwiperSlide } from "swiper/vue"
 import { Virtual } from "swiper/modules"
@@ -20,10 +21,10 @@ export default {
 
             actualCurrentSlideIndex: 300,
             currentSlideIndex: 300,            
-            eventsStack: [] as WoaEventModelWrapper[],
+            eventsStack: [] as BaseCardDataModel[],
 
-            rightSwipes: [] as WoaEventModelWrapper[],
-            leftSwipeIds: [] as number[],
+            rightSwipes: [] as BaseCardDataModel[],
+            leftSwipeIds: [] as string[],
 
             redOpacity: 0,
             greenOpacity: 0
@@ -42,9 +43,9 @@ export default {
                 console.info("added right swipe")
 
                 this.rightSwipes.push(this.eventsStack[0])
-                this.$client.space?.self?.toggleSuggested(this.eventsStack[0].data.uid)
+                this.$client.space?.self?.toggleSuggested(this.eventsStack[0].uid)
             }else{
-                this.leftSwipeIds.push(this.eventsStack[0].data.uid)
+                this.leftSwipeIds.push(this.eventsStack[0].uid)
                 this.updateLeftSwipes()
             }
 
@@ -73,8 +74,12 @@ export default {
             
             let excludeIds = [ ... this.leftSwipeIds, ...this.$client.space!!.self!!.likes, ...this.$client.space!!.self!!.suggestions ]
             
-            this.eventsStack = [ ...this.$client.container.events ]
-            this.eventsStack = this.eventsStack.filter(e => !excludeIds.includes(e.data.uid))
+            this.eventsStack = [ ...this.$client.container.combinedActs.filter(a => a.isConcert()) ]
+            this.eventsStack = this.eventsStack.filter(e => !excludeIds.includes(e.uid))
+
+            let unixS = new Date().getTime() / 1000
+            this.eventsStack = this.eventsStack.filter(e => (e instanceof WoaEventModelWrapper) ? e.end > unixS : true)
+            this.eventsStack.sort((a,b) => (a instanceof WoaEventModelWrapper && b instanceof WoaEventModelWrapper) ? a.start - b.start : 0)
             
             this.loaded = true
         })()  
@@ -133,7 +138,7 @@ export default {
                         <SwiperSlide :virtual-index="n - 1">
                             <template v-if="eventsStack.length > 0 && n-1 > currentSlideIndex-2 && n-1 < currentSlideIndex+2">
                                 <div class="round surface-container padding">
-                                    <SwiperCard class="swiper-card" :event="eventsStack[(n-1 == currentSlideIndex) ? 0 : 1]" />
+                                    <SwiperCard class="swiper-card" :model="eventsStack[(n-1 == currentSlideIndex) ? 0 : 1]" />
                                 </div>
                             </template>
                         </SwiperSlide>

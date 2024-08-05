@@ -1,5 +1,5 @@
 <script lang="ts">
-import EventCard from "@/components/event/EventCard.vue"
+import ActCard from "@/components/act/ActCard.vue"
 
 import WoaEventModelWrapper from "@/sdk/model/WoaEventModelWrapper"
 
@@ -18,27 +18,27 @@ export default {
     },
     methods: {
         render() {
-            let eventIdWeightMap = new Map<number, number>()
+            let actIdWeightMap = new Map<string, number>()
             for(let member of (this.$client.space?.members || [])) {
                 for(let likeId of member.likes) {
-                    eventIdWeightMap.set(likeId, (eventIdWeightMap.get(likeId) || 0) + 2)
+                    actIdWeightMap.set(likeId, (actIdWeightMap.get(likeId) || 0) + 2)
                 }
 
                 for(let suggestId of member.suggestions) {
-                    eventIdWeightMap.set(suggestId, (eventIdWeightMap.get(suggestId) || 0) + 1)
+                    actIdWeightMap.set(suggestId, (actIdWeightMap.get(suggestId) || 0) + 1)
                 }
             }
 
             let eventIds = []
-            eventIds.push(... eventIdWeightMap.keys())
-            eventIds.sort((a,b) => { return (eventIdWeightMap.get(b) || 0) - (eventIdWeightMap.get(a) || 0) })
+            eventIds.push(... actIdWeightMap.keys())
+            eventIds.sort((a,b) => { return (actIdWeightMap.get(b) || 0) - (actIdWeightMap.get(a) || 0) })
 
             this.entries = []
             let index = 0
             for(let eventId of eventIds) {
                 this.entries.push({
                     index: index,
-                    entry: this.$client.container.eventByUid.value.get(eventId) as any
+                    entry: this.$client.container.actByUid.value.get(eventId) as any
                 })
 
                 index ++
@@ -61,7 +61,7 @@ export default {
             this.check()
         }
     },
-    components: { EventCard }
+    components: { ActCard }
 }
 </script>
 
@@ -83,9 +83,9 @@ export default {
             <div class="space"></div>
 
             <template v-for="entry of entries">
-                <EventCard :event="entry.entry">
+                <ActCard :model="entry.entry">
                     <h6>{{ entry.index + 1 }}.</h6>
-                </EventCard>
+                </ActCard>
             </template>
         </div>
     </dialog>

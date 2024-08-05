@@ -44,7 +44,7 @@ export default {
         (async() => {
             while(this.$client.space?.loaded != true) await delay(50)
             this.loaded = true
-        })()  
+        })()
     },
     beforeRouteUpdate(to, from) {
         if(from.query.dialogFilterStages && !to.query.dialogFilterStages) {
@@ -63,7 +63,7 @@ export default {
         ? $client.space?.name
         : $t('navigation.overview')">
 
-        <template v-slot:prepend>
+        <template v-slot:prepend v-if="$client.container.festival.value?.runningOrderActive">
             <button class="circle transparent" @click="openStageSelectionDialog()">
                 <i>tune</i>
                 <div class="badge" v-if="finalFilteredStageIds.length > 0">{{ finalFilteredStageIds.length }}</div>
@@ -72,7 +72,28 @@ export default {
     </AppBar>
 
     <main class="responsive max">
-        <EventsTable :filterStages="finalFilteredStageIds" />
+        <template v-if="$client.container.festival.value?.runningOrderActive">
+            <EventsTable :filterStages="finalFilteredStageIds" />
+        </template>
+
+        <!-- show info when running order isn't available -->
+        <template v-if="$client.container.festival.value?.runningOrderActive != true">
+            <div class="middle-align center-align" style="height: 100%">
+                <article class="medium middle-align center-align">
+                    <div>
+                        <i class="extra">tune</i>
+                        <h5 class="center-align">{{ $t("home.runningOrderInactive.title") }}</h5>
+                        <p class="center-align">{{ $t("home.runningOrderInactive.message")}}</p>
+
+                        <div class="space"></div>
+                        
+                        <nav class="center-align">
+                            <button @click="$router.push('/acts')">{{ $t("common.showActs") }}</button>
+                        </nav>
+                    </div>
+                </article>
+            </div>
+        </template>
     </main>
 
     <div class="overlay" :class="{ active: $route.query.dialogFilterStages }" @click="$router.back()"></div>

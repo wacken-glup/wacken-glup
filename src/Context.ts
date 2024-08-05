@@ -24,12 +24,18 @@ export default class Context {
     loaded = ref<Boolean>(false)
     authLoaded = ref<Boolean>(false)
 
+    showOfflineButton = ref<Boolean>(false)
+
+    // uid for WOA 2025
+    currentFestivalUid = 9
+
     constructor(fbApp: FirebaseApp) {
         this.auth = getAuth(fbApp)
         this.db = getFirestore(fbApp)
 
         /* update user state */
         this.auth.onAuthStateChanged(async (user) => {
+            if(this.authLoaded.value) return
             this.currentUser.value = user || undefined
 
             await delay(50)

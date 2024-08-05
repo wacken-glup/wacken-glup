@@ -188,9 +188,9 @@ export default class Space {
             this.ctx.client.container.spaceMemberById.set(m.id, m)
         })
 
-        for(let event of this.ctx.client.container.events) {
-            event.suggestorIds = this.members.filter(m => m.suggestions.includes(event.data.uid)).map(m => m.id)
-            event.likerIds = this.members.filter(m => m.likes.includes(event.data.uid)).map(m => m.id)
+        for(let act of this.ctx.client.container.combinedActs) {
+            act.suggestorIds = this.members.filter(m => m.suggestions.includes(act.uid)).map(m => m.id)
+            act.likerIds = this.members.filter(m => m.likes.includes(act.uid)).map(m => m.id)
         }
     }
 

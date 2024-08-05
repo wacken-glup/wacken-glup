@@ -26,7 +26,7 @@ import en from "@/locales/en.json"
 import de from "@/locales/de.json"
 
 /* set ui theme */
-ui("theme", import.meta.env.VITE_THEME_COLOR || "#F90323");
+ui("theme", import.meta.env.VITE_THEME_COLOR || "#9AB14D");
 
 const firebaseConfig: FirebaseOptions = {
     apiKey: import.meta.env.VITE_FB_API_KEY,
@@ -45,7 +45,7 @@ declare module 'vue' {
         $client: Client,
         $ctx: Context,
         openLoginNeededDialog: Ref<Boolean>,
-        showOfflineReadyToast: Ref<Boolean>,
+        showOfflineReadyToast: Ref<Boolean>
     }
 }
 
@@ -65,7 +65,7 @@ app.config.globalProperties.$client = client
 app.config.globalProperties.$ctx = context
 app.config.globalProperties.openLoginNeededDialog = ref(false)
 app.config.globalProperties.showOfflineReadyToast = ref(false)
-client.fetchEvents()
+client.fetchAll()
 
 app.use(i18n)
 app.use(router)

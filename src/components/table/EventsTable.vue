@@ -4,7 +4,7 @@ import type { PropType } from "vue"
 import type { WoaFestivalDay } from "@/sdk/model/WoaModels"
 import WoaEventModelWrapper from "@/sdk/model/WoaEventModelWrapper"
 
-import EventCard from "../event/EventCard.vue"
+import ActCard from "@/components/act/ActCard.vue"
 
 type Column = {
     startOffset: number,
@@ -24,7 +24,7 @@ export default {
             currentSec: 0,
 
             selectedDay: undefined as WoaFestivalDay | undefined,
-            highlightedEventId: -1,
+            highlightedEventId: "",
 
             columns: [] as Column[],
             timeCells: [] as number[],
@@ -114,7 +114,7 @@ export default {
 
         if(this.$route.query.eventId || this.$route.query.dayId) {
             let festivalDayId = ( (this.$route.query.eventId) ? () => {
-                let event = this.$client.container.eventByUid.value.get(parseInt(this.$route.query.eventId as any))
+                let event = this.$client.container.eventByUid.value.get(this.$route.query.eventId+"")
                 return event?.data.festivalday.uid
             } : () => {
                 return parseInt(this.$route.query.dayId?.toString() || "")
@@ -123,19 +123,19 @@ export default {
             this.selectedDay = this.$client.container.days.value.find(d => d.uid == festivalDayId)
             
             if(this.$route.query.eventId) {
-                let event = this.$client.container.eventByUid.value.get(parseInt(this.$route.query.eventId as any))
+                let event = this.$client.container.eventByUid.value.get(this.$route.query.eventId+"")
 
                 setTimeout(() => {
-                    let elem = document.querySelector(`#event-${ event?.data.uid }`)
+                    let elem = document.querySelector(`#event-${ event?.uid }`)
                     elem?.scrollIntoView({
                         behavior: "smooth",
                         block: "center",
                         inline: "center"
                     })
 
-                    this.highlightedEventId = event?.data.uid || -1
+                    this.highlightedEventId = event?.uid || ""
                     setTimeout(() => {
-                        this.highlightedEventId = -1
+                        this.highlightedEventId = ""
                     }, 2000)
                 }, 500)
             }
@@ -167,7 +167,7 @@ export default {
             this.render()
         }
     },
-    components: { EventCard }
+    components: { ActCard }
 }
 </script>
 
@@ -225,13 +225,13 @@ export default {
 
                     <tr>
                         <template v-for="entry in column.eventEntryByRow">
-                            <td v-if="entry != null" :colspan="entry.columnSpan" :id="`event-${ entry.data.uid.toString() }`"
+                            <td v-if="entry != null" :colspan="entry.columnSpan" :id="`event-${ entry.uid }`"
                                 class="surface" style="min-width: 300px; position: sticky; left: 0">
 
-                                <EventCard 
+                                <ActCard 
                                     style="min-width: 300px; position: sticky; left: 0" 
-                                    :event="entry" :highlighted="entry.data.uid == highlightedEventId">
-                                </EventCard>
+                                    :model="entry" :highlighted="entry.uid == highlightedEventId">
+                                </ActCard>
                             </td>
 
                             <td v-if="entry == null" class="surface">

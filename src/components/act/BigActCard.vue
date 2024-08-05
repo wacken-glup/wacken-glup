@@ -2,14 +2,20 @@
 import type { PropType } from 'vue'
 import { removeHTMLTags } from "@/Utils"
 
-import WoaEventModelWrapper from "../../sdk/model/WoaEventModelWrapper"
+import BaseCardDataModel from "@/sdk/model/BaseCardDataModel"
+import WoaEventModelWrapper from "@/sdk/model/WoaEventModelWrapper"
 
 import EventDetailsChips from "@/components/event/EventDetailsChips.vue"
 
 export default {
+    data() {
+        return {
+            WoaEventModelWrapper
+        }
+    },
     props: {
-        event: {
-            type: Object as PropType<WoaEventModelWrapper>,
+        model: {
+            type: Object as PropType<BaseCardDataModel>,
             required: true
         },
         notLazy: {
@@ -24,7 +30,7 @@ export default {
         openDialog() {
             this.$router.push({
                 query: {
-                    details: this.event.data.uid
+                    details: this.model.uid
                 }
             })
         },
@@ -33,8 +39,8 @@ export default {
                 this.openLoginNeededDialog.value = true
                 return
             }
-
-            this.$client.space?.self?.toggleSuggested(this.event.data.uid)
+            
+            this.$client.space?.self?.toggleSuggested(this.model.uid)
         },
         toggleLike() {
             if(this.$ctx.currentUser.value === undefined) {
@@ -42,7 +48,7 @@ export default {
                 return
             }
 
-            this.$client.space?.self?.toggleLike(this.event.data.uid)
+            this.$client.space?.self?.toggleLike(this.model.uid)
         }
     },
     components: { EventDetailsChips }
@@ -50,31 +56,31 @@ export default {
 </script>
 
 <template>
-    <article v-if="event != undefined" class="no-padding" 
+    <article v-if="model != undefined" class="no-padding" 
         :class="[ 
-            ($client.space?.self?.isLiked(event.data.uid)) ? 'primary' 
-                : (event.likerIds.length > 0 || event.suggestorIds.length > 0) ? 'secondary'
+            ($client.space?.self?.isLiked(model.uid)) ? 'primary' 
+                : (model.likerIds.length > 0 || model.suggestorIds.length > 0) ? 'secondary'
                 : ''
         ]">
     
         <div class="absolute top right right padding white-text" style="z-index: 10">
             <button class="blur circle" @click="toggleSuggested()">
-                <i :class="{ fill: $client.space?.self?.isSuggested(event.data.uid), 'primary-text': $client.space?.self?.isSuggested(event.data.uid) }">thumb_up</i>
+                <i :class="{ fill: $client.space?.self?.isSuggested(model.uid), 'primary-text': $client.space?.self?.isSuggested(model.uid) }">thumb_up</i>
             </button>
 
             <button class="blur circle" @click="toggleLike()">
-                <i :class="{ fill: $client.space?.self?.isLiked(event.data.uid), 'primary-text': $client.space?.self?.isLiked(event.data.uid) }">favorite</i>
+                <i :class="{ fill: $client.space?.self?.isLiked(model.uid), 'primary-text': $client.space?.self?.isLiked(model.uid) }">favorite</i>
             </button>
         </div>
 
         <div @click="openDialog()" class="wave wave-big" style="cursor: pointer">
             <div>
-                <img v-if="!notLazy" class="responsive large" v-lazy="{ src: event.cardThumbnailUrl() }">
-                <img v-if="notLazy" class="responsive large" :src="event.cardThumbnailUrl()">
+                <img v-if="!notLazy" class="responsive large" v-lazy="{ src: model.cardThumbnailUrl() }">
+                <img v-if="notLazy" class="responsive large" :src="model.cardThumbnailUrl()">
 
-                <div v-if="event.suggestorIds.length > 0" class="absolute bottom left padding white-text rounded" style="z-index: 10; max-width: 50%; overflow: hidden">
+                <div v-if="model.suggestorIds.length > 0" class="absolute bottom left padding white-text rounded" style="z-index: 10; max-width: 50%; overflow: hidden">
                     <div class="blur small-padding" style="display: flex; flex-direction: row; flex-wrap: nowrap; overflow: hidden;">
-                        <template v-for="suggestorId of event.suggestorIds">
+                        <template v-for="suggestorId of model.suggestorIds">
                             <i class="fill" :style="{ scale: 0.7 }" :class="[ `${ $client.container.spaceMemberById.get(suggestorId)?.color }-text` ]">
                                 thumb_up
                             </i>
@@ -82,9 +88,9 @@ export default {
                     </div>
                 </div>
 
-                <div v-if="event.likerIds.length > 0" class="absolute bottom right padding white-text rounded" style="z-index: 10; max-width: 50%; overflow: hidden">
+                <div v-if="model.likerIds.length > 0" class="absolute bottom right padding white-text rounded" style="z-index: 10; max-width: 50%; overflow: hidden">
                     <div class="blur small-padding" style="display: flex; flex-direction: row; flex-wrap: nowrap; overflow: hidden;">
-                        <template v-for="likerId of event.likerIds">
+                        <template v-for="likerId of model.likerIds">
                             <i class="fill" :style="{ scale: 0.7 }" :class="[ `${ $client.container.spaceMemberById.get(likerId)?.color }-text` ]">
                                 favorite
                             </i>
@@ -95,15 +101,17 @@ export default {
 
             <div class="padding" style="padding-bottom: 0 !important">
                 <h5 style="display: block; text-overflow: ellipsis; word-wrap: break-word; overflow: hidden; max-height: 3.6em; line-height: 1.2em;">
-                    {{ event.cardTitle() }}
+                    {{ model.cardTitle() }}
                 </h5>
             </div>
 
-            <EventDetailsChips :event="event"></EventDetailsChips>
+            <template v-if="(model instanceof WoaEventModelWrapper)">
+                <EventDetailsChips :event="model"></EventDetailsChips>
+            </template>
 
             <div class="padding">
                 <p style="display: block; text-overflow: ellipsis; word-wrap: break-word; overflow: hidden; max-height: 5em; line-height: 1.8em;">
-                    {{ removeHTMLTags(event.cardDescription()) }}
+                    {{ removeHTMLTags(model.cardDescription()) }}
                 </p>
             </div>
         </div>

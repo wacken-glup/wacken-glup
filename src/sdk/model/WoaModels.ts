@@ -1,11 +1,11 @@
 export interface WoaEvent {
   artists: WoaArtist[]
   end: string
-  festival: Festival
+  festival: WoaFestival
   festivalday: WoaFestivalDay
   images: any
   media: any
-  performance: Performance
+  performance: WoaPerformance
   stage: WoaStage
   start: string
   subtitle: string
@@ -30,7 +30,7 @@ export interface Asset {
   externalMediaRatio: string
   externalMediaSource: string
   extraDay: boolean
-  festival?: Festival
+  festival?: WoaFestival
   firsttime: boolean
   images: Image[]
   networkuri: Networkuri[]
@@ -50,7 +50,7 @@ export interface WoaAssetArtist {
   uid: number
 }
 
-export interface Festival {
+export interface WoaFestival {
   runningOrderActive: boolean
   title: string
   uid: number
@@ -93,7 +93,7 @@ export interface WoaFestivalDay {
   uid: number
 }
 
-export interface Performance {
+export interface WoaPerformance {
   title: string
   uid: number
 }

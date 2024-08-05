@@ -13,6 +13,9 @@
             },
             "onlineAgain": {
                 "message": "You are back online. Click me to reload."
+            },
+            "button": {
+                "message": "Click to view offline."
             }
         }
     },
@@ -51,7 +54,8 @@
         "liked": "Liked",
         "recommended": "Recommended",
         "details": "Details",
-        "until": "until"
+        "until": "until",
+        "showActs": "Show acts"
     },
     "join": {
         "title": "Join space",
@@ -93,6 +97,10 @@
         }
     },
     "home": {
+        "runningOrderInactive": {
+            "title": "No running order",
+            "message": "The running order hasn't been announced yet."
+        },
         "dialog": {
             "filterStages": {
                 "title": "Filter stages",
@@ -116,7 +124,8 @@
                 "label": "Sort chronological",
                 "description": "Show upcoming acts at the top"
             }
-        }
+        },
+        "results": "{count} results"
     },
     "swiper": {
         "done": {

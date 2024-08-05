@@ -1,16 +1,16 @@
 <script lang="ts">
 import type { PropType } from 'vue'
 
-import WoaEventModelWrapper from "../../sdk/model/WoaEventModelWrapper"
+import BaseCardDataModel from "../../sdk/model/BaseCardDataModel"
 
-import EventDetailsDialogContent from "./details/EventDetailsDialogContent.vue"
+import ActDetailsDialogContent from "./details/ActDetailsDialogContent.vue"
 import EventDetailsChips from "@/components/event/EventDetailsChips.vue"
 
 export default {
     props: {
         open: Boolean,
-        event: {
-            type: Object as PropType<WoaEventModelWrapper>,
+        model: {
+            type: Object as PropType<BaseCardDataModel>,
             required: true
         }
     },
@@ -21,7 +21,7 @@ export default {
                 return
             }
 
-            this.$client.space?.self?.toggleSuggested(this.event.data.uid)
+            this.$client.space?.self?.toggleSuggested(this.model.uid)
         },
         toggleLike() {
             if(this.$ctx.currentUser.value === undefined) {
@@ -29,11 +29,11 @@ export default {
                 return
             }
 
-            this.$client.space?.self?.toggleLike(this.event.data.uid)
+            this.$client.space?.self?.toggleLike(this.model.uid)
         }
     },
     emits: [ "dismiss" ],
-    components: { EventDetailsDialogContent, EventDetailsChips }
+    components: { ActDetailsDialogContent, EventDetailsChips }
 }
 </script>
 
@@ -41,7 +41,7 @@ export default {
     <div class="overlay" :class="{ active: open }" @click="$emit('dismiss')"></div>
 
     <dialog :class="{ active: open }" class="max-s">
-        <img class="responsive large absolute top right" :src="event.cardThumbnailUrl()">
+        <img class="responsive large absolute top right" :src="model.cardThumbnailUrl()">
 
         <header class="blur" style="border-radius: 1.75rem; position: sticky; top: 0; z-index: 100;">
             <nav>
@@ -54,19 +54,19 @@ export default {
                 <h5 class="max">{{ $t("common.details") }}</h5>
 
                 <button class="transparent circle" @click="toggleSuggested()">
-                    <i class="ignore-hover-fill" :class="{ fill: $client.space?.self?.isSuggested(event.data.uid), 'primary-text': $client.space?.self?.isSuggested(event.data.uid) }">thumb_up</i>
+                    <i class="ignore-hover-fill" :class="{ fill: $client.space?.self?.isSuggested(model.uid), 'primary-text': $client.space?.self?.isSuggested(model.uid) }">thumb_up</i>
                 </button>
 
                 <button class="transparent circle" @click="toggleLike()">
-                    <i class="ignore-hover-fill" :class="{ fill: $client.space?.self?.isLiked(event.data.uid), 'primary-text': $client.space?.self?.isLiked(event.data.uid) }">favorite</i>
+                    <i class="ignore-hover-fill" :class="{ fill: $client.space?.self?.isLiked(model.uid), 'primary-text': $client.space?.self?.isLiked(model.uid) }">favorite</i>
                 </button>
 
                 <div class="small-space"></div>
             </nav>
         </header>
         
-        <img class="responsive large" style="opacity: 0" :src="event.cardThumbnailUrl() || '/'">
+        <img class="responsive large" style="opacity: 0" :src="model.cardThumbnailUrl() || '/'">
 
-        <EventDetailsDialogContent :event="event" style="margin-top: -112px" />
+        <ActDetailsDialogContent :model="model" style="margin-top: -112px" />
     </dialog>
 </template>

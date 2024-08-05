@@ -1,19 +1,16 @@
-import { reactive, ref } from "vue"
 import type { WoaEvent } from "./WoaModels"
+import BaseCardDataModel from "./BaseCardDataModel"
 
-export default class WoaEventModelWrapper {
+export default class WoaEventModelWrapper extends BaseCardDataModel {
 
     data: WoaEvent
 
     start: number
     end: number
 
-    _cardTitle: string = ""
-    
-    suggestorIds = reactive<string[]>([])
-    likerIds = reactive<string[]>([])
-
     constructor(model: WoaEvent) {
+        super(`y${model.festival.uid}-event-${model.uid}`)
+
         this.data = model
 
         this.start = parseInt(this.data.start)
