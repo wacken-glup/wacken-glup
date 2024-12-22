@@ -1,0 +1,36 @@
+name: Distribute app
+on:
+  schedule:
+    - cron: '0 10 * * *'
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+jobs:
+  dist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+      - name: Create privacy.html
+        run: echo "${{ vars.PRIVACY_HTML }}" >> public/privacy.html
+      - name: Create google-site-verification
+        run: echo "${{ vars.GOOGLE_SITE_VERIFICATION }}" >> public/googleed0b3c081c6adf25.html
+      - name: Create README.md
+        run: echo "${{ vars.README_MD }}" >> public/README.md
+      - name: Install packages
+        run: npm i
+      - name: Build
+        run: npm run build
+      - name: Deploy to external repository
+        uses: cpina/github-action-push-to-another-repository@v1.7.2
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.EXTERNAL_REPOSITORY_PERSONAL_ACCESS_TOKEN }}
+        with:
+          source-directory: dist
+          destination-github-username: wacken-glup
+          destination-repository-name: wacken-glup.github.io
+          user-email: wacken-glup@mailbox.org
