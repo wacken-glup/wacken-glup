@@ -4,10 +4,13 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "update-json": "wget https://www.wacken.com/fileadmin/Json/bandlist-concert.json -O src/assets/data/bands.json && wget https://www.wacken.com/fileadmin/Json/events-complete.json -O src/assets/data/events-complete.json",
     "dev": "vite",
-    "build": "wget https://www.wacken.com/fileadmin/Json/bandlist-concert.json -O src/assets/data/bands.json && wget https://www.wacken.com/fileadmin/Json/events-complete.json -O src/assets/data/events-complete.json && run-p type-check \"build-only {@}\" --",
+    "build": "npm run update-json && run-p type-check \"build-only {@}\" --",
+    "build-workflow": "npm run update-json && run-p type-check \"build-only-workflow {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
+    "build-only-workflow": "vite build --outDir=../wacken-glup.github.io",
     "type-check": "vue-tsc --build --force",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/"
