@@ -169,7 +169,7 @@ export default class Client {
 
         this.container.events = reactive([])
         for(let event of eventsComplete.default) {
-            if(event.festival.uid !== this.ctx.currentFestivalUid) continue
+            if((event as any).festival.uid !== this.ctx.currentFestivalUid) continue
 
             let model = new WoaEventModelWrapper(event as WoaEvent)
             this.container.events.push(model)
@@ -202,7 +202,7 @@ export default class Client {
                 stageUids.push(model.data.stage.uid)   
             }
 
-            let festival = event.artists[0]?.assets[0]?.festival
+            let festival = (event as any).artists[0]?.assets[0]?.festival
             if(festival != undefined) this.container.festival.value = festival
         }
 

@@ -1,3 +1,12 @@
+import { registerSW } from 'virtual:pwa-register'
+
+let onOfflineReadyCall: any = undefined
+if ("serviceWorker" in navigator) {
+    registerSW({ immediate: true, onOfflineReady() {
+        if(onOfflineReadyCall !== undefined) onOfflineReadyCall()
+    } })
+}
+
 import './assets/main.css'
 
 /* ui */
@@ -9,8 +18,6 @@ import '@mdi/font/css/materialdesignicons.css';
 import { createApp, ref, type Ref } from 'vue'
 import VueQrcode from '@chenfengyuan/vue-qrcode';
 import VueLazyload from 'vue3-lazyload';
-
-import { registerSW } from 'virtual:pwa-register'
 
 import Client from '@/sdk/Client'
 import Context from './Context';
@@ -75,8 +82,6 @@ app.component(VueQrcode.name || "", VueQrcode)
 
 app.mount('body')
 
-if ("serviceWorker" in navigator) {
-    registerSW({ immediate: true, onOfflineReady() {
-        app.config.globalProperties.showOfflineReadyToast.value = true
-    } })
+onOfflineReadyCall = () => {
+    app.config.globalProperties.showOfflineReadyToast.value = true
 }
