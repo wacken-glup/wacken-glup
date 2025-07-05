@@ -130,7 +130,8 @@
     "swiper": {
         "done": {
             "title": "keine weiteren Acts",
-            "message": "Du hast {count} Acts markiert | Du hast einen Act markiert | Du hast {count} Acts markiert"
+            "message": "Du hast {count} Acts markiert | Du hast einen Act markiert | Du hast {count} Acts markiert",
+            "resetLeftSwipes": "Zurücksetzen"
         },
         "dialog": {
             "introduction": {

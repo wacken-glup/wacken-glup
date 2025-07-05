@@ -62,14 +62,19 @@ export default {
             }, 50);
         },
         updateLeftSwipes() {
-            localStorage.setItem("leftSwipeIds", JSON.stringify(this.leftSwipeIds))
+            this.$client.space.self.leftSwipeIds = JSON.parse(JSON.stringify(this.leftSwipeIds))
+            this.$client.space.self.update()
+        },
+        resetLeftSwipes() {
+            this.$client.space.self.leftSwipeIds = []
+            this.$client.space.self.update()
         }
     },
     mounted() {
         (async() => {
             while(this.$client.space?.loaded != true) await delay(50)
 
-            this.leftSwipeIds = JSON.parse(localStorage.getItem("leftSwipeIds") || "[]");
+            this.leftSwipeIds = JSON.parse(JSON.stringify(this.$client.space.self.leftSwipeIds));
             console.info("left swipes", this.leftSwipeIds);
             
             let excludeIds = [ ... this.leftSwipeIds, ...this.$client.space!!.self!!.likes, ...this.$client.space!!.self!!.suggestions ]
@@ -112,8 +117,8 @@ export default {
 
 <template>
     <div style="width: 100%">
-        <div class="absolute red swipe-indicator" :style="{ opacity: redOpacity }"></div>
-        <div class="absolute green swipe-indicator right" :style="{ opacity: greenOpacity }"></div>
+        <div class="fixed red swipe-indicator" :style="{ opacity: redOpacity }"></div>
+        <div class="fixed green swipe-indicator right" :style="{ opacity: greenOpacity }"></div>
     </div>
 
     <main class="responsive max swiper-view-main" style="z-index: 1;">
@@ -124,7 +129,13 @@ export default {
                         <div>
                             <i class="extra">check</i>
                             <h5>{{ $t("swiper.done.title") }}</h5>
-                            <p v-if="rightSwipes.length > 0">{{ $tc("swiper.done.message", rightSwipes.length) }}</p>                        
+                            <p v-if="rightSwipes.length > 0">{{ $tc("swiper.done.message", rightSwipes.length) }}</p>      
+                        
+                            <div class="space"></div>
+        
+                            <nav class="center-align">
+                                <button @click="resetLeftSwipes()">{{ $t("swiper.done.resetLeftSwipes") }}</button>
+                            </nav>
                         </div>
                     </article>
                 </template>

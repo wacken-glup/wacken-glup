@@ -15,6 +15,8 @@ export default class SpaceMember {
     suggestions: string[] = []
     likes: string[] = []
 
+    leftSwipeIds: string[] = []
+
     _data: any
 
     offline: Boolean = false
@@ -136,7 +138,9 @@ export default class SpaceMember {
                 color: this.color,
 
                 suggestions: this.suggestions,
-                likes: this.likes
+                likes: this.likes,
+
+                leftSwipeIds: this.leftSwipeIds
             })
         }catch(e: any) {
             console.error("error while updating SpaceMember", e)
@@ -146,6 +150,8 @@ export default class SpaceMember {
     parseData(data: any) {
         this.name = data.name
         this.color = data.color
+
+        this.leftSwipeIds = data.leftSwipeIds || []
 
         if(this.ctx.client.container.festival.value?.uid === undefined) {
             this.suggestions = data.suggestions
