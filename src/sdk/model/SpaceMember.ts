@@ -83,6 +83,11 @@ export default class SpaceMember {
         this.update()
     }
 
+    changeLeftSwipeIds(leftSwipeIds: string[]) {
+        this.leftSwipeIds = leftSwipeIds
+        this.update()
+    }
+
     calculateTasteMatch(against: SpaceMember): number {
         let combinedThis = [
             ... new Set([

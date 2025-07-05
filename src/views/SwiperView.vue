@@ -62,17 +62,19 @@ export default {
             }, 50);
         },
         updateLeftSwipes() {
-            this.$client.space.self.leftSwipeIds = JSON.parse(JSON.stringify(this.leftSwipeIds))
-            this.$client.space.self.update()
+            if(this.$client.space?.self === undefined) return
+            this.$client.space.self.changeLeftSwipeIds(this.leftSwipeIds)
         },
         resetLeftSwipes() {
-            this.$client.space.self.leftSwipeIds = []
-            this.$client.space.self.update()
+            if(this.$client.space?.self === undefined) return
+            this.$client.space.self.changeLeftSwipeIds([])
         }
     },
     mounted() {
         (async() => {
             while(this.$client.space?.loaded != true) await delay(50)
+
+            if(this.$client.space?.self === undefined) return
 
             this.leftSwipeIds = JSON.parse(JSON.stringify(this.$client.space.self.leftSwipeIds));
             console.info("left swipes", this.leftSwipeIds);
