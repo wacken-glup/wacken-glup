@@ -61,7 +61,7 @@ export default {
         </template>
     </AppBar>
 
-    <main class="responsive" v-if="loaded">
+    <main class="responsive scroll" v-if="loaded">
         <div class="middle-align center-align" style="height: 100%">
             <div v-if="$client.space != null" class="center-align" style="
                 display: flex; flex-direction: row; flex-wrap: wrap; gap: 24px;
