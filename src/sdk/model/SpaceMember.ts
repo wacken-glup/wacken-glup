@@ -1,6 +1,7 @@
 import type Context from "@/Context";
 import type Space from "./Space";
 import { collection, deleteDoc, doc, getDocs, setDoc } from "firebase/firestore";
+import type WoaBandModelWrapper from "./WoaBandModelWrapper";
 
 export default class SpaceMember {
 
@@ -152,11 +153,37 @@ export default class SpaceMember {
         }else{
             this.suggestions = data.suggestions?.filter?.((id: string) => (id+"").startsWith(`y${ this.ctx.client.container.festival.value?.uid }`)) || data.suggestions
             this.likes = data.likes?.filter?.((id: string) => (id+"").startsWith(`y${ this.ctx.client.container.festival.value?.uid }`)) || data.likes
+
+            this.suggestions = this.suggestions.flatMap(actId => {
+                return this._convertBandIdsToEventIdsWhenAvailable(actId)  
+            })
+
+            this.likes = this.likes.flatMap(actId => {
+                return this._convertBandIdsToEventIdsWhenAvailable(actId)  
+            })
         }
 
-        // TODO: add all events to suggestions/likes that contain suggested/liked bands
-
         this._data = data
+    }
+
+    // fetches events from bands if available
+    _convertBandIdsToEventIdsWhenAvailable(actId: string) {
+        if(!actId.startsWith(`y${ this.ctx.client.container.festival.value?.uid }-band`)) return [actId]
+
+        let band = (this.ctx.client.container.actByUidNonRef.get(actId) as (WoaBandModelWrapper | undefined))?.data
+        if(band == undefined || band.artist.events.length == 0) return [actId]
+        
+        let eventIds = []
+        for(let artistEvent of band.artist.events) {
+            let eventActId = `y${ this.ctx.client.container.festival.value?.uid }-event-${ artistEvent.uid }`
+            
+            let eventAct = this.ctx.client.container.actByUidNonRef.get(eventActId)
+            if(eventAct?.uid == undefined) return [actId]
+
+            eventIds.push(eventAct.uid)
+        }
+
+        return eventIds
     }
 
 }

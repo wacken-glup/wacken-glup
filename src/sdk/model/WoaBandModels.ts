@@ -20,7 +20,7 @@ export interface WoaBand {
 
 export interface WoaBandArtist {
   country: WoaBandCountry[]
-  events: Event[]
+  events: WoaBandArtistEvent[]
   pathSegment: string
   title: string
   uid: number
@@ -33,20 +33,7 @@ export interface WoaBandCountry {
   uid: number
 }
 
-export interface WoaBandEvent {
-  artists: WoaBandArtist[]
-  end: string
-  festival: any
-  festivalday: WoaFestivalDay
-  images: any
-  media: any
-  performance: Performance
-  stage: WoaStage
-  start: string
-  subtitle: string
-  sysLanguageUid: string
-  teaser: string
-  title: string
+export interface WoaBandArtistEvent {
   uid: number
 }
 
