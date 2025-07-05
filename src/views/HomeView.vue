@@ -48,7 +48,7 @@ export default {
             this.loaded = true
         })()
 
-        let festivalEnd = parseInt(Math.max(... this.$client.container.events.map(e => e.end))) * 1000
+        let festivalEnd = Math.max(... this.$client.container.events.map(e => e.end)) * 1000
         this.hasFestivalEnded = Date.now() > festivalEnd
     },
     beforeRouteUpdate(to, from) {
