@@ -8,7 +8,7 @@ export default {
 </script>
 
 <template>
-    <nav class="left drawer l">
+    <nav class="left max l">
         <NavigationItems />
 
         <NavigationItem

@@ -18,7 +18,7 @@
   "dependencies": {
     "@chenfengyuan/vue-qrcode": "^2.0.0",
     "@mdi/font": "^7.4.47",
-    "beercss": "^3.6.8",
+    "beercss": "^3.11.30",
     "delay": "^6.0.0",
     "firebase": "^10.12.3",
     "fuse.js": "^7.0.0",

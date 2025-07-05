@@ -110,7 +110,7 @@ export default {
         </template>
     </AppBar>
 
-    <main class="responsive max">
+    <main class="responsive max scroll">
         <div class="grid">
             <div class="s7 m8 l9">
                 <div class="field large prefix round fill">

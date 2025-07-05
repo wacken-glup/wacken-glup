@@ -177,7 +177,7 @@ export default {
         <i>arrow_drop_down</i>
         <menu id="events-table-day-selector">
             <template v-for="day of $client.container.days.value">
-                <a @click="selectDay(day)">{{ $t(day.title) }}</a>
+                <li @click="selectDay(day)">{{ $t(day.title) }}</li>
             </template>
         </menu>
     </button>
@@ -201,10 +201,10 @@ export default {
 
     <div class="space"></div>
 
-    <div style="height: 100%">
-        <table class="scroll events-table" style="display: block; max-height: 100%; min-height: 100%">
+    <div style="height: 100%" class="scroll">
+        <table class="scroll events-table" style="display: block">
             <thead class="fixed">
-                <tr>
+                <tr class="surface">
                     <th v-for="time of timeCells" style="min-width: 150px">
                         {{ new Date(time * 1000).toLocaleTimeString("de", { hour: '2-digit', minute: '2-digit' }) }}
                     </th>
@@ -241,6 +241,8 @@ export default {
                     </tr>
                 </template>
             </tbody>
+
+            <br><br><br>
         </table>
     </div>
 </template>
