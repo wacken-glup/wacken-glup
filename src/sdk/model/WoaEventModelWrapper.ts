@@ -54,4 +54,8 @@ export default class WoaEventModelWrapper extends BaseCardDataModel {
         return this.data.performance.title == "Concert"
     }
 
+    performance() {
+        return this.data.performance.title
+    }
+
 }

@@ -17,7 +17,9 @@ export default {
             queryResults: undefined as BaseCardDataModel[] | undefined,
             resultsShown: 10,
 
-            onlyConcerts: false,
+            filterPerformance: "" as string,
+            availablePerformances: [] as string[],
+
             sortTime: false
         }
     },
@@ -25,6 +27,8 @@ export default {
         processQuery() {
             if(this.query.length < 2) {
                 this.queryResults = [ ... this.$client.container.combinedActs ]
+                if(this.filterPerformance.length > 0)
+                    this.queryResults = this.queryResults.filter(a => a.performance() == this.filterPerformance)
                 if(this.sortTime) this.sortQueryResultsAfterTime()
                 return
             }
@@ -36,6 +40,9 @@ export default {
                 if((obj.score || 0) > 0.5) continue
                 this.queryResults.push(obj.item as any)
             }
+
+            if(this.filterPerformance.length > 0)
+                this.queryResults = this.queryResults.filter(a => a.performance() == this.filterPerformance)
 
             if(this.sortTime) this.sortQueryResultsAfterTime()
         },
@@ -69,6 +76,8 @@ export default {
         }
     },
     mounted() {
+        this.availablePerformances = [...new Set(this.$client.container.combinedActs.map(e => e.performance()))]
+
         this.processQuery()
 
         this.mountObserver()
@@ -80,6 +89,9 @@ export default {
             this.queryTimeout = setTimeout(() => {
                 this.processQuery()
             }, 1000)
+        },
+        filterPerformance() {
+            this.processQuery()
         },
         sortTime() {
             this.processQuery()
@@ -99,25 +111,23 @@ export default {
     </AppBar>
 
     <main class="responsive max">
-        <div class="field large prefix round fill">
-            <i class="front">search</i>
-            <input class="search" :placeholder="$t('acts.search.placeholder')" v-model="query">
-        </div>
-
-        <div class="field prefix middle-align" @click="onlyConcerts = !onlyConcerts">
-            <nav>
-                <i>headphones</i>
-
-                <div class="max">
-                    <h6>{{ $t("acts.filter.onlyConcerts.label") }}</h6>
-                    <div>{{ $t("acts.filter.onlyConcerts.description") }}</div>
+        <div class="grid">
+            <div class="s7 m8 l9">
+                <div class="field large prefix round fill">
+                    <i class="front">search</i>
+                    <input class="search" :placeholder="$t('acts.search.placeholder')" v-model="query">
                 </div>
-                
-                <label class="switch">
-                    <input type="checkbox" v-model="onlyConcerts" @click="onlyConcerts = !onlyConcerts">
-                    <span></span>
-                </label>
-            </nav>
+            </div>
+            <div class="s5 m4 l3">
+                <div class="field large suffix round fill">
+                    <select v-model="filterPerformance">
+                        <option value="">All</option>
+                        <option v-for="label of availablePerformances">{{ label }}</option>
+                    </select>
+
+                    <i>arrow_drop_down</i>
+                </div>
+            </div>
         </div>
 
         <div class="field prefix middle-align" @click="sortTime = !sortTime">
@@ -143,7 +153,7 @@ export default {
         <div class="grid">
             <template v-for="index in queryResults?.length">
                 <template v-if="index < resultsShown">
-                    <div v-if="!onlyConcerts || queryResults!![index-1]!!.isConcert()" class="s12 m6 l4">
+                    <div class="s12 m6 l4">
                         <BigActCard :model="queryResults!![index-1]!!" />
                     </div>
 

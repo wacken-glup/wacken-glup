@@ -29,4 +29,8 @@ export default class BaseCardDataModel {
         return false
     }
 
+    performance() {
+        return ""
+    }
+
 }

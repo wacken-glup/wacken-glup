@@ -116,10 +116,6 @@
             "placeholder": "Nach Acts suchen"
         },
         "filter": {
-            "onlyConcerts": {
-                "label": "Nur Konzerte",
-                "description": "Alle anderen Auftritte ausblenden"
-            },
             "sortTime": {
                 "label": "Zeitlich sortieren",
                 "description": "Anstehende Acts oben anzeigen"

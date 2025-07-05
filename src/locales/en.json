@@ -116,10 +116,6 @@
             "placeholder": "Search for acts"
         },
         "filter": {
-            "onlyConcerts": {
-                "label": "Only concerts",
-                "description": "Hide all other acts"
-            },
             "sortTime": {
                 "label": "Sort chronological",
                 "description": "Show upcoming acts at the top"

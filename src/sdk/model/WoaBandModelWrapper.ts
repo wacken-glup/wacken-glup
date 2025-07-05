@@ -28,4 +28,8 @@ export default class WoaBandModelWrapper extends BaseCardDataModel {
         return true
     }
 
+    performance() {
+        return this.data.performance[0].title
+    }
+
 }
