@@ -101,6 +101,10 @@
             "title": "keine Running Order",
             "message": "Die Running Order wurde noch nicht bekannt gegeben."
         },
+        "festivalEnded": {
+            "title": "Das Festival ist vorbei",
+            "message": "See you in Wacken — Rain or Shine 🤘"
+        },
         "dialog": {
             "filterStages": {
                 "title": "Stages filtern",

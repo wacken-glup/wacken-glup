@@ -12,7 +12,9 @@ export default {
             filteredStageIds: [] as number[],
             finalFilteredStageIds: [] as number[],
 
-            save: false
+            save: false,
+            
+            hasFestivalEnded: false
         }  
     },
     methods: {
@@ -45,6 +47,9 @@ export default {
             while(this.$client.space?.loaded != true) await delay(50)
             this.loaded = true
         })()
+
+        let festivalEnd = parseInt(Math.max(... this.$client.container.events.map(e => e.end))) * 1000
+        this.hasFestivalEnded = Date.now() > festivalEnd
     },
     beforeRouteUpdate(to, from) {
         if(from.query.dialogFilterStages && !to.query.dialogFilterStages) {
@@ -72,7 +77,7 @@ export default {
     </AppBar>
 
     <main class="responsive max">
-        <template v-if="$client.container.festival.value?.runningOrderActive">
+        <template v-if="$client.container.festival.value?.runningOrderActive && !hasFestivalEnded">
             <EventsTable :filterStages="finalFilteredStageIds" />
         </template>
 
@@ -90,6 +95,19 @@ export default {
                         <nav class="center-align">
                             <button @click="$router.push('/acts')">{{ $t("common.showActs") }}</button>
                         </nav>
+                    </div>
+                </article>
+            </div>
+        </template>
+
+        <!-- show info when festival is over -->
+        <template v-if="hasFestivalEnded">
+            <div class="middle-align center-align" style="height: 100%">
+                <article class="medium middle-align center-align">
+                    <div>
+                        <i class="extra">skull</i>
+                        <h5 class="center-align">{{ $t("home.festivalEnded.title") }}</h5>
+                        <p class="center-align">{{ $t("home.festivalEnded.message")}}</p>
                     </div>
                 </article>
             </div>
