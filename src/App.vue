@@ -21,7 +21,7 @@ export default {
     methods: {
         updateThemeColor() {
             let mode = ui("mode")
-            let color = ((ui("theme") as any)[mode as any] as string).split("--surface-container:")[1].split(";")[0]
+            let color = ((ui("theme") as any)[mode as any] as string).split("--surface:")[1].split(";")[0]
             document.querySelector('meta[name="theme-color"]')?.setAttribute('content', color)
         },
         checkSystemTheme() {
