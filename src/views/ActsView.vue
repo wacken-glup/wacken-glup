@@ -102,13 +102,7 @@ export default {
 </script>
 
 <template>
-    <AppBar :label="$t('navigation.acts')">
-        <template v-slot:prepend>
-            <button class="circle transparent" @click="$router.push('/swiper')">
-                <i>swipe</i>
-            </button>
-        </template>
-    </AppBar>
+    <AppBar :label="$t('navigation.acts')" />
 
     <main class="responsive max scroll">
         <div class="grid">

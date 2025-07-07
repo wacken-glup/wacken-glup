@@ -22,6 +22,7 @@
     "navigation": {
         "overview": "Overview",
         "acts": "Acts",
+        "discover": "Discover",
         "members": "Members",
         "settings": "Settings"
     },
@@ -135,7 +136,7 @@
         },
         "dialog": {
             "introduction": {
-                "title": "The swiper",
+                "title": "Discover",
                 "message": "If you like the act, swipe right. If you don't, swipe left."
             }
         }

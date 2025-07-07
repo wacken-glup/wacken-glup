@@ -1,4 +1,5 @@
 <script lang="ts">
+import AppBar from "@/components/AppBar.vue"
 import SwiperCard from "@/components/swiper/SwiperCard.vue"
 
 import BaseCardDataModel from "@/sdk/model/BaseCardDataModel"
@@ -113,7 +114,7 @@ export default {
             }
         }
     },
-    components: { Swiper, SwiperSlide, SwiperCard }
+    components: { AppBar, Swiper, SwiperSlide, SwiperCard }
 }
 </script>
 
@@ -123,7 +124,9 @@ export default {
         <div class="fixed green swipe-indicator right" :style="{ opacity: greenOpacity }"></div>
     </div>
 
-    <main class="responsive max swiper-view-main" style="z-index: 1;">
+    <AppBar :label="$t('navigation.discover')" />
+
+    <main class="responsive max discover-view-main" style="z-index: 1;">
         <div class="round row center-align middle-align" style="height: 100%">
             <div class="absolute">
                 <template v-if="eventsStack.length == 0 && loaded">
@@ -179,7 +182,7 @@ export default {
 
 <style lang="scss">
 @media only screen and (min-width: 601px) {
-    .swiper-view-main {
+    .discover-view-main {
         .swiper-container {
             width: 50vw; 
             height: 50vh;
@@ -192,7 +195,7 @@ export default {
 }
 
 @media only screen and (max-width: 601px) {
-    .swiper-view-main {
+    .discover-view-main {
         .swiper-container {
             width: 90%; 
             height: 85vh;

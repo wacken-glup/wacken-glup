@@ -29,6 +29,13 @@ export default {
     <template v-if="$ctx.currentUser.value != undefined">
         <NavigationItem 
             :selected-route="selectedPage"
+            navId="discover"
+            route="/discover"
+            icon="explore"
+            :label="$t('navigation.discover')" />
+
+        <NavigationItem 
+            :selected-route="selectedPage"
             navId="members"
             route="/members"
             icon="group"

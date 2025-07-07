@@ -25,9 +25,12 @@ const router = createRouter({
       }
     },
     {
-      path: '/swiper',
-      name: 'swiper',
-      component: () => import('../views/SwiperView.vue')
+      path: '/discover',
+      name: 'discover',
+      component: () => import('../views/DiscoverView.vue'),
+      meta: {
+        navId: "discover"
+      }
     },
     {
       path: '/members',

@@ -22,6 +22,7 @@
     "navigation": {
         "overview": "Überblick",
         "acts": "Acts",
+        "discover": "Entdecken",
         "members": "Mitglieder",
         "settings": "Einstellungen"
     },
@@ -135,7 +136,7 @@
         },
         "dialog": {
             "introduction": {
-                "title": "Der Swiper",
+                "title": "Entdecken",
                 "message": "Wische nach rechts, wenn du den Act magst und nach links, wenn nicht."
             }
         }
