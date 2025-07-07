@@ -24,7 +24,7 @@ export default {
 </script>
 
 <template>
-    <main class="responsive max">
+    <main class="responsive max scroll">
         <template v-if="$ctx.currentUser.value == undefined">
             <div class="middle-align" style="height: 100%">
                 <article class="large-padding center middle-align center-align">

@@ -113,7 +113,7 @@ export default {
 <template>
     <AppBar :label="$t('navigation.settings')" />
 
-    <main class="responsive">
+    <main class="responsive max">
         <template v-if="$ctx.currentUser.value != undefined">
             <div class="center-align" style="height: 100%; display: flex; flex-direction: column;">
                 <article class="medium center middle-align center-align" style="min-width: 300px">

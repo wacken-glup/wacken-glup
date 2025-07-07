@@ -71,7 +71,7 @@ export default {
 </script>
 
 <template>
-    <main class="responsive max">
+    <main class="responsive max scroll">
         <template v-if="$ctx.currentUser.value != undefined && $route.query.callback === undefined">
             {{ $router.push("/login") }}
         </template>
