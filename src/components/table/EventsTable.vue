@@ -201,8 +201,8 @@ export default {
 
     <div class="space"></div>
 
-    <div style="height: 100%" class="scroll">
-        <table class="scroll events-table" style="display: block">
+    <div style="height: 100%">
+        <table class="scroll events-table" style="display: block; height: 100%">
             <thead class="fixed">
                 <tr class="surface">
                     <th v-for="time of timeCells" style="min-width: 150px">
