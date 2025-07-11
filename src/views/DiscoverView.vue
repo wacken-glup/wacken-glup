@@ -196,12 +196,14 @@ export default {
 
 @media only screen and (max-width: 601px) {
     .discover-view-main {
+        width: 100%;
+
         .swiper-container {
             width: 90%; 
-            height: 85vh;
+            height: 90%;
 
             .swiper-card {
-                height: 80vh;
+                max-height: 70vh;
             }
         }
     }
