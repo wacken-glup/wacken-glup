@@ -23,6 +23,7 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*'],
+        maximumFileSizeToCacheInBytes: 5000000,
       },
       includeAssets: ['**/*'],
     })
