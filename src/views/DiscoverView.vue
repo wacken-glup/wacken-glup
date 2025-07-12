@@ -4,7 +4,8 @@ import SwiperCard from "@/components/swiper/SwiperCard.vue"
 
 import BaseCardDataModel from "@/sdk/model/BaseCardDataModel"
 import WoaEventModelWrapper from "@/sdk/model/WoaEventModelWrapper"
-
+import type WoaBandModelWrapper from "./WoaBandModelWrapper";
+    
 import { Swiper, SwiperSlide } from "swiper/vue"
 import { Virtual } from "swiper/modules"
 import 'swiper/css'
