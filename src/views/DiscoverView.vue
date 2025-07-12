@@ -69,6 +69,25 @@ export default {
         resetLeftSwipes() {
             if(this.$client.space?.self === undefined) return
             this.$client.space.self.changeLeftSwipeIds([])
+        },
+        // fetches events from bands if available
+        _convertBandIdsToEventIdsWhenAvailable(actId: string) {
+            if(!actId.startsWith(`y${ this.$client.container.festival.value?.uid }-band`)) return [actId]
+
+            let band = (this.$client.container.actByUidNonRef.get(actId) as (WoaBandModelWrapper | undefined))?.data
+            if(band == undefined || band.artist.events.length == 0) return [actId]
+
+            let eventIds = []
+            for(let artistEvent of band.artist.events) {
+                let eventActId = `y${ this.$client.container.festival.value?.uid }-event-${ artistEvent.uid }`
+
+                let eventAct = this.$client.container.actByUidNonRef.get(eventActId)
+                if(eventAct?.uid == undefined) return [actId]
+
+                eventIds.push(eventAct.uid)
+            }
+
+            return eventIds
         }
     },
     mounted() {
@@ -79,8 +98,12 @@ export default {
 
             this.leftSwipeIds = JSON.parse(JSON.stringify(this.$client.space.self.leftSwipeIds));
             console.info("left swipes", this.leftSwipeIds);
+
+            let leftSwipeEventIds = this.leftSwipeIds.flatMap(actId => {
+                return this._convertBandIdsToEventIdsWhenAvailable(actId)  
+            })
             
-            let excludeIds = [ ... this.leftSwipeIds, ...this.$client.space!!.self!!.likes, ...this.$client.space!!.self!!.suggestions ]
+            let excludeIds = [ ...leftSwipeEventIds, ...this.leftSwipeIds, ...this.$client.space!!.self!!.likes, ...this.$client.space!!.self!!.suggestions ]
             
             this.eventsStack = [ ...this.$client.container.combinedActs.filter(a => a.isConcert()) ]
             this.eventsStack = this.eventsStack.filter(e => !excludeIds.includes(e.uid))
