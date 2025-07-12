@@ -51,7 +51,7 @@ export interface WoaAssetArtist {
 }
 
 export interface WoaFestival {
-  runningOrderActive: boolean
+  runningOrderActive?: boolean
   title: string
   uid: number
 }
