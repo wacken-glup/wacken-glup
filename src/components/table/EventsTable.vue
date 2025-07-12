@@ -162,6 +162,8 @@ export default {
                     dayId: this.selectedDay?.uid || -1
                 }
             })
+
+            ui("#events-table-day-selector")
         },
         "filterStages"() {
             this.render()
