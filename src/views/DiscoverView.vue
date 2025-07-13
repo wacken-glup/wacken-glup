@@ -16,7 +16,8 @@ export default {
     data() {
         return {
             loaded: false,
-            openSwiperIntroductionDialog: true,
+            openSwiperIntroductionDialog: false,
+            openSwiperResetDialog: false,
 
             swiper: undefined as any,
             modules: [ Virtual ],
@@ -24,6 +25,8 @@ export default {
             actualCurrentSlideIndex: 300,
             currentSlideIndex: 300,            
             eventsStack: [] as BaseCardDataModel[],
+
+            totalSize: 0,
 
             rightSwipes: [] as BaseCardDataModel[],
             leftSwipeIds: [] as string[],
@@ -70,6 +73,12 @@ export default {
         resetLeftSwipes() {
             if(this.$client.space?.self === undefined) return
             this.$client.space.self.changeLeftSwipeIds([])
+
+            window.location.reload()
+        },
+        dismissIntroduction() {
+            this.openSwiperIntroductionDialog = false
+            localStorage.setItem("discover.introducedSwiper", "true")
         },
         // fetches events from bands if available
         _convertBandIdsToEventIdsWhenAvailable(actId: string) {
@@ -92,6 +101,8 @@ export default {
         }
     },
     mounted() {
+        this.openSwiperIntroductionDialog = !(localStorage.getItem("discover.introducedSwiper"));
+
         (async() => {
             while(this.$client.space?.loaded != true) await delay(50)
 
@@ -106,7 +117,9 @@ export default {
             
             let excludeIds = [ ...leftSwipeEventIds, ...this.leftSwipeIds, ...this.$client.space!!.self!!.likes, ...this.$client.space!!.self!!.suggestions ]
             
+
             this.eventsStack = [ ...this.$client.container.combinedActs.filter(a => a.isConcert()) ]
+            this.totalSize = this.eventsStack.length
             this.eventsStack = this.eventsStack.filter(e => !excludeIds.includes(e.uid))
 
             let unixS = new Date().getTime() / 1000
@@ -151,6 +164,8 @@ export default {
     <AppBar :label="$t('navigation.discover')" />
 
     <main class="responsive max discover-view-main" style="z-index: 1;">
+        <p v-if="totalSize != 0" class="center-align"><b>{{ totalSize - eventsStack.length }} / {{ totalSize }}</b></p>
+
         <div class="round row center-align middle-align" style="height: 100%">
             <div class="absolute">
                 <template v-if="eventsStack.length == 0 && loaded">
@@ -163,7 +178,7 @@ export default {
                             <div class="space"></div>
         
                             <nav class="center-align">
-                                <button @click="resetLeftSwipes()">{{ $t("swiper.done.resetLeftSwipes") }}</button>
+                                <button @click="openSwiperResetDialog = true">{{ $t("swiper.done.resetLeftSwipes") }}</button>
                             </nav>
                         </div>
                     </article>
@@ -197,8 +212,25 @@ export default {
         <div class="space"></div>
 
         <nav class="right-align no-space">
-            <button class="no-elevate" @click="openSwiperIntroductionDialog = false">
+            <button class="no-elevate" @click="dismissIntroduction()">
                 {{ $t("common.ok") }}
+            </button>
+        </nav>
+    </dialog>
+
+    <dialog class="error" :class="{ active: openSwiperResetDialog }">
+        <h5>{{ $t("swiper.dialog.reset.title") }}</h5>
+        <div>{{ $t("swiper.dialog.reset.message") }}</div>
+        
+        <nav class="right-align no-space">
+            <button class="error transparent" @click="openSwiperResetDialog = false">
+                {{ $t("common.abort") }}
+            </button>
+            
+            <div class="space"></div>
+
+            <button class="error-container no-elevate" @click="openSwiperResetDialog = false; resetLeftSwipes()">
+                {{ $t("common.confirm") }}
             </button>
         </nav>
     </dialog>
@@ -227,7 +259,7 @@ export default {
             height: 90%;
 
             .swiper-card {
-                max-height: 70vh;
+                max-height: 65vh;
             }
         }
     }

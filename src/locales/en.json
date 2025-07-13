@@ -139,6 +139,10 @@
             "introduction": {
                 "title": "Discover",
                 "message": "If you like the act, swipe right. If you don't, swipe left."
+            },
+            "reset": {
+                "title": "Reset swipes",
+                "message": "Do you really want to reset your swipes?"
             }
         }
     },

@@ -139,6 +139,10 @@
             "introduction": {
                 "title": "Entdecken",
                 "message": "Wische nach rechts, wenn du den Act magst und nach links, wenn nicht."
+            },
+            "reset": {
+                "title": "Swipes zurücksetzen",
+                "message": "Möchtest du deine Swipes wirklich zurücksetzen?"
             }
         }
     },
