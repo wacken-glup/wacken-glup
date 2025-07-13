@@ -38,8 +38,6 @@ export default {
         selectDay(day: WoaFestivalDay) {
             this.selectedDay = day
             this.dateWasChosen = true
-
-            ui("#events-table-day-selector")
         },
         render() {
             let timeCells: number[] = []
@@ -174,7 +172,7 @@ export default {
 </script>
 
 <template>
-    <button data-ui="#events-table-day-selector" class="center responsive s" style="z-index: 10">
+    <button class="center responsive s" style="z-index: 10">
         <span>{{ $t(selectedDay?.title || "") }}</span>
         <i>arrow_drop_down</i>
         <menu id="events-table-day-selector">
