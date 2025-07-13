@@ -203,20 +203,42 @@ export default {
 
                         <nav class="tabbed">
                             <a :class="{ active: secondaryPage == 0 }" @click="secondaryPage = 0">
-                                <i>add</i>
-                                <span>{{ $t("common.add")  }}</span>
+                                <i>check_circle</i>
+                                <span>{{ $t("common.select") }}</span>
                             </a>
 
                             <a :class="{ active: secondaryPage == 1 }" @click="secondaryPage = 1">
-                                <i>check_circle</i>
-                                <span>{{ $t("common.select") }}</span>
+                                <i>add</i>
+                                <span>{{ $t("common.add")  }}</span>
                             </a>
                         </nav>
 
                         <div class="space"></div>
                         <div class="space"></div>
 
-                        <div class="page left center-align" :class="{ active: secondaryPage == 0 }"> 
+                        <div v-if="$client.space != undefined" class="page left center-align" :class="{ active: secondaryPage == 0 }">
+                            <article style="max-height: 50vh; overflow: scroll">
+                                <template v-for="member of ($client.space.members as any as SpaceMember[])">
+                                    <a v-if="!member.isOwner()" class="row wave padding" @click="chooseMember(member)">
+                                        <button class="circle" :class="[ `${ member.color }5` ]"><i style="color: black">person</i></button>
+                                        <div class="max">
+                                            <h6 class="small">{{ member.name }}</h6>
+                                            <div><span class="link">{{ $tc("common.likes", member.likes.length) }} {{ $t("common.and") }} {{ $tc("common.recommendations", member.suggestions.length) }}</span></div>
+                                        </div>
+                                    </a>
+                                </template>
+
+                                <a class="row wave padding" @click="secondaryPage = 1">
+                                    <button class="circle"><i>add</i></button>
+                                    <div class="max">
+                                        <h6 class="small">{{ $tc("common.add") }}</h6>
+                                        <div><span class="link">{{ $tc("join.whoAreYou.add") }}</span></div>
+                                    </div>
+                                </a>
+                            </article>
+                        </div>
+
+                        <div class="page right center-align" :class="{ active: secondaryPage == 1 }"> 
                             <form id="join-form" onsubmit="event.preventDefault()">
                                 <div class="field label prefix border">
                                     <i>label</i>
@@ -244,20 +266,6 @@ export default {
                                     <span>{{ $t("common.finish") }}</span>
                                 </button>
                             </nav>
-                        </div>
-
-                        <div v-if="$client.space != undefined" class="page right center-align" :class="{ active: secondaryPage == 1 }">
-                            <article style="max-height: 50vh; overflow: scroll">
-                                <template v-for="member of ($client.space.members as any as SpaceMember[])">
-                                    <a v-if="!member.isOwner()" class="row wave padding" @click="chooseMember(member)">
-                                        <button class="circle" :class="[ `${ member.color }5` ]"><i style="color: black">person</i></button>
-                                        <div class="max">
-                                            <h6 class="small">{{ member.name }}</h6>
-                                            <div><span class="link">{{ $tc("common.likes", member.likes.length) }} {{ $t("common.and") }} {{ $tc("common.recommendations", member.suggestions.length) }}</span></div>
-                                        </div>
-                                    </a>
-                                </template>
-                            </article>
                         </div>
                     </div>
                 </div>

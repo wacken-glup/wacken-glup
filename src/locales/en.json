@@ -72,7 +72,8 @@
             "message": [
                 "You can add yourself to the members of this space",
                 "or choose an already created persona from the list."
-            ]
+            ],
+            "add": "Not a part of the list? Click here"
         },
         "dialog": {
             "error": {

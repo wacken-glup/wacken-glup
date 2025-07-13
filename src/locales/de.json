@@ -72,7 +72,8 @@
             "message": [
                 "Du kannst entweder dich als neue Person hinzufügen oder,",
                 "falls du dies bereits getan hast, deine bestehende Person auswählen."
-            ]
+            ],
+            "add": "Kein Teil der Liste? Klicke hier"
         },
         "dialog": {
             "error": {
