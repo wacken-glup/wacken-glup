@@ -118,7 +118,7 @@ export default {
             <div class="center-align" style="height: 100%; display: flex; flex-direction: column;">
                 <article class="medium center middle-align center-align" style="min-width: 300px">
                     <div>
-                        <i v-if="$ctx.currentUser.value.photoURL == null" class="extra">person</i>
+                        <i v-if="$ctx.currentUser.value.photoURL == null" :class="[ `${ $client.space?.self?.color }-text` ]" class="extra">person</i>
                         <img v-if="$ctx.currentUser.value.photoURL != null" class="circle large" :src="$ctx.currentUser.value.photoURL" referrerpolicy="no-referrer">
 
                         <h5 class="center-align">{{ $t("common.greeting") }} {{ 
@@ -180,6 +180,11 @@ export default {
                         <h5 class="center-align">Space » {{ $client.space.name }} «</h5>
 
                         <nav class="center-align">
+                            <button class="large" @click="invite()">
+                                <i>share</i>
+                                <span>{{ $t("common.invite") }}</span>
+                            </button>
+
                             <button class="large error" @click="leaveSpace()">
                                 <i>logout</i>
                                 <span>{{ $t("common.leave") }}</span>
