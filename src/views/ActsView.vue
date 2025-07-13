@@ -79,7 +79,6 @@ export default {
         this.availablePerformances = [...new Set(this.$client.container.combinedActs.map(e => e.performance()))]
 
         this.processQuery()
-
         this.mountObserver()
     },
     watch: {
@@ -88,13 +87,16 @@ export default {
 
             this.queryTimeout = setTimeout(() => {
                 this.processQuery()
+                this.mountObserver()
             }, 1000)
         },
         filterPerformance() {
             this.processQuery()
+            this.mountObserver()
         },
         sortTime() {
             this.processQuery()
+            this.mountObserver()
         }
     },
     components: { AppBar, BigActCard }
