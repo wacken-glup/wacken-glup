@@ -24,9 +24,7 @@ export default {
 </script>
 
 <template>
-    <nav class="scroll hide-scrollbar" style="z-index: 10">
-        <div></div>
-        
+    <nav class="wrap" style="padding-inline: 16px; z-index: 10">
         <a class="chip fill">{{ event.data.stage.title }}</a>
         <a class="chip fill">{{ $t(event.data.performance.title) }}</a>
         <a class="chip fill" @click="e => { e.stopPropagation(); showOnTimetable() }">{{ $t(event.data.festivalday.title) }}</a>
