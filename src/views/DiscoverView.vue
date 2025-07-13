@@ -74,7 +74,9 @@ export default {
             if(this.$client.space?.self === undefined) return
             this.$client.space.self.changeLeftSwipeIds([])
 
-            window.location.reload()
+            setTimeout(() => {
+                window.location.reload()
+            }, 500)
         },
         dismissIntroduction() {
             this.openSwiperIntroductionDialog = false
@@ -229,7 +231,7 @@ export default {
             
             <div class="space"></div>
 
-            <button class="error-container no-elevate" @click="openSwiperResetDialog = false; resetLeftSwipes()">
+            <button class="error-container no-elevate" @click="openSwiperResetDialog = false; resetLeftSwipes();">
                 {{ $t("common.confirm") }}
             </button>
         </nav>
