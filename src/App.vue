@@ -67,7 +67,7 @@ export default {
         this.checkOffline()
 
         if(!("Notification" in window)) return
-        this.showNotificationsToast = Notification.permission !== "denied" && Notification.permission !== "granted"
+        this.showNotificationsToast = Notification.permission !== "granted"
     },
     watch: {
         "$ctx.systemDarkMode.value"() {
