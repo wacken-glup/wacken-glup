@@ -1,4 +1,4 @@
-self.addEventListener('notificationclick', onPush);
+self.addEventListener('notificationclick', onNotificationClick);
 
 async function onNotificationClick(e) {
     e.notification.close() 
