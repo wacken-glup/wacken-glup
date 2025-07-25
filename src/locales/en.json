@@ -6,6 +6,9 @@
         }
     },
     "app": {
+        "notifications": {
+            "message": "Click to receive reminders for your favorites."
+        },
         "offline": {
             "message": "You are offline. No changes can be made.",
             "ready": {

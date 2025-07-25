@@ -17,6 +17,8 @@ export default class SpaceMember {
 
     leftSwipeIds: string[] = []
 
+    webPushSubscription: string | undefined = undefined
+
     _data: any
 
     offline: Boolean = false
@@ -88,6 +90,11 @@ export default class SpaceMember {
         this.update()
     }
 
+    updateWebPushSubscription(webPushSubscription: string) {
+        this.webPushSubscription = webPushSubscription
+        this.update()
+    }
+
     calculateTasteMatch(against: SpaceMember): number {
         let combinedThis = [
             ... new Set([
@@ -145,7 +152,9 @@ export default class SpaceMember {
                 suggestions: this.suggestions,
                 likes: this.likes,
 
-                leftSwipeIds: this.leftSwipeIds
+                leftSwipeIds: this.leftSwipeIds,
+
+                webPushSubscription: this.webPushSubscription
             })
         }catch(e: any) {
             console.error("error while updating SpaceMember", e)

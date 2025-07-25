@@ -15,7 +15,9 @@ export default {
             offlineCheckInterval: 0,
             onlineAgain: false,
 
-            toggleOfflineSnackbar: false
+            toggleOfflineSnackbar: false,
+
+            showNotificationsToast: false
         }
     },
     methods: {
@@ -43,6 +45,10 @@ export default {
         },
         reloadPage() {
             window.location.reload()
+        },
+        async requestNotificationPermission() {
+            await Notification.requestPermission()
+            this.reloadPage()
         }
     },
     mounted() {
@@ -59,6 +65,9 @@ export default {
         }, 50)
 
         this.checkOffline()
+
+        if(!("Notification" in window)) return
+        this.showNotificationsToast = Notification.permission !== "denied" && Notification.permission !== "granted"
     },
     watch: {
         "$ctx.systemDarkMode.value"() {
@@ -131,6 +140,11 @@ export default {
         <div class="snackbar green center-align" :class="{ active: $client.offline.value && onlineAgain }" @click="reloadPage()">
             <i>globe</i>
             <div>{{ $t("app.offline.onlineAgain.message") }}</div>
+        </div>
+
+        <div class="snackbar green center-align" :class="{ active: showNotificationsToast }" @click="requestNotificationPermission()">
+            <i>notifications</i>
+            <div>{{ $t("app.notifications.message") }}</div>
         </div>
 
         <div class="snackbar primary center-align error" :class="{ active: $client.offline.value && !onlineAgain && !toggleOfflineSnackbar }" @click="toggleOfflineSnackbar = true">

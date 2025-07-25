@@ -54,6 +54,17 @@ export default class Client {
                 this.activateOfflineMode()
             }
         });
+
+        // update webPushSubscription value
+        setInterval(() => {
+            if(this.space?.self === undefined) return
+            
+            let webPushSubscription = localStorage.getItem("webPushSubscription")
+            if(webPushSubscription == null) return
+            if(this.space.self.webPushSubscription == webPushSubscription) return
+
+            this.space.self.updateWebPushSubscription(webPushSubscription)
+        }, 15*1000);
     }
 
     activateOfflineMode() {

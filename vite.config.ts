@@ -22,6 +22,7 @@ export default defineConfig({
         theme_color: "#181211"
       },
       workbox: {
+        importScripts: ['/sw/push.js'],
         globPatterns: ['**/*'],
         maximumFileSizeToCacheInBytes: 5000000,
       },

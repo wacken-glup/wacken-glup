@@ -32,6 +32,7 @@ jobs:
           echo VITE_FB_STORAGE_BUCKET=${{ secrets.VITE_FB_STORAGE_BUCKET }} >> .env
           echo VITE_FB_MESSAGING_SENDER_ID=${{ secrets.VITE_FB_MESSAGING_SENDER_ID }} >> .env
           echo VITE_FB_APP_ID=${{ secrets.VITE_FB_APP_ID }} >> .env
+          echo VITE_PUSH_APPLICATION_SERVER_KEY=${{ secrets.VITE_PUSH_APPLICATION_SERVER_KEY }} >> .env
           echo VITE_PRIVACY_POLICY=${{ secrets.VITE_PRIVACY_POLICY }} >> .env
         
       - name: Install packages

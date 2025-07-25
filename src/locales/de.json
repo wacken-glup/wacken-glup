@@ -6,6 +6,9 @@
         }
     },
     "app": {
+        "notifications": {
+            "message": "Klicke, um Erinnerungen für deine Favoriten zu erhalten."
+        },
         "offline": {
             "message": "Du bist offline, keine Änderungen werden übernommen.",
             "ready": {

@@ -2,9 +2,27 @@ import { registerSW } from 'virtual:pwa-register'
 
 let onOfflineReadyCall: any = undefined
 if ("serviceWorker" in navigator) {
-    registerSW({ immediate: true, onOfflineReady() {
-        if(onOfflineReadyCall !== undefined) onOfflineReadyCall()
-    } })
+    (async() => {
+        if((await Notification.requestPermission()) !== 'granted') return
+
+        registerSW({ 
+            immediate: true, 
+            onOfflineReady() {
+                if(onOfflineReadyCall !== undefined) onOfflineReadyCall()
+            },
+            async onRegisteredSW(_, registration) {
+                const subscription = await registration?.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: import.meta.env.VITE_PUSH_APPLICATION_SERVER_KEY
+                })
+
+                localStorage.setItem("webPushSubscription", JSON.stringify(subscription))
+            },
+            onRegisterError(error) {
+                console.error(error)
+            }
+        })
+    })();
 }
 
 import './assets/main.css'
