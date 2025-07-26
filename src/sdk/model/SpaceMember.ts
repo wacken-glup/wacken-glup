@@ -145,17 +145,18 @@ export default class SpaceMember {
         }
 
         try {
-            await setDoc(doc(this.ctx.db, "spaces", this.space.id, "members", this.id), {
+            const obj = {
                 name: this.name,
                 color: this.color,
 
                 suggestions: this.suggestions,
                 likes: this.likes,
 
-                leftSwipeIds: this.leftSwipeIds,
+                leftSwipeIds: this.leftSwipeIds
+            }
 
-                webPushSubscription: this.webPushSubscription
-            })
+            if(this.webPushSubscription !== undefined) obj["webPushSubscription"] = this.webPushSubscription
+            await setDoc(doc(this.ctx.db, "spaces", this.space.id, "members", this.id), )
         }catch(e: any) {
             console.error("error while updating SpaceMember", e)
         }
