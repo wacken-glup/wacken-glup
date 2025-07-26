@@ -23,7 +23,10 @@ export default {
 
         <template v-if="!plain">
             <div class="center-align" style="position: fixed; bottom: 65px; width: 100%">
-                <p class="link"><a class="link underline" :href="privacyPolicyUrl">{{ $t("privacyPolicy") }}</a></p>
+                <p class="link">
+                    <a class="link underline" :href="privacyPolicyUrl">{{ $t("privacyPolicy") }}</a><br>
+                    <a class="link underline" href="mailto:wacken-glup@mailbox.org">Contact me: wacken-glup@mailbox.org</a>
+                </p>
             </div>
         </template>
     </template>
