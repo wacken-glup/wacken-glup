@@ -17,7 +17,7 @@ export default class SpaceMember {
 
     leftSwipeIds: string[] = []
 
-    webPushSubscription: string | undefined = undefined
+    webPushSubscription: string = ""
 
     _data: any
 
@@ -145,18 +145,17 @@ export default class SpaceMember {
         }
 
         try {
-            const obj = {
+            await setDoc(doc(this.ctx.db, "spaces", this.space.id, "members", this.id), {
                 name: this.name,
                 color: this.color,
 
                 suggestions: this.suggestions,
                 likes: this.likes,
 
-                leftSwipeIds: this.leftSwipeIds
-            }
+                leftSwipeIds: this.leftSwipeIds,
 
-            if(this.webPushSubscription !== undefined) obj["webPushSubscription"] = this.webPushSubscription
-            await setDoc(doc(this.ctx.db, "spaces", this.space.id, "members", this.id), )
+                webPushSubscription: this.webPushSubscription
+            })
         }catch(e: any) {
             console.error("error while updating SpaceMember", e)
         }
@@ -167,6 +166,8 @@ export default class SpaceMember {
         this.color = data.color
 
         this.leftSwipeIds = data.leftSwipeIds || []
+
+        this.webPushSubscription = data.webPushSubscription || ""
 
         if(this.ctx.client.container.festival.value?.uid === undefined) {
             this.suggestions = data.suggestions
