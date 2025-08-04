@@ -26,8 +26,8 @@ export default class Context {
 
     showOfflineButton = ref<Boolean>(false)
 
-    // uid for WOA 2025
-    currentFestivalUid = 9
+    // uid for WOA 2026
+    currentFestivalUid = 10
 
     constructor(fbApp: FirebaseApp) {
         this.auth = getAuth(fbApp)

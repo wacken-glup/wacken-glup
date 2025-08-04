@@ -51,7 +51,7 @@ import en from "@/locales/en.json"
 import de from "@/locales/de.json"
 
 /* set ui theme */
-ui("theme", import.meta.env.VITE_THEME_COLOR || "#9AB14D");
+ui("theme", import.meta.env.VITE_THEME_COLOR || "#C6131A");
 
 const firebaseConfig: FirebaseOptions = {
     apiKey: import.meta.env.VITE_FB_API_KEY,
