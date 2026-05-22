@@ -14,7 +14,7 @@ export default class BaseCardDataModel {
     _cardTitle: string = ""
 
     cardThumbnailUrl() {
-        return "https://www.wacken.com/fileadmin/_processed_/5/f/csm_woa_25_bandposter_announcement_240803_fb-page-header_e4c70e6c02.jpg"
+        return "https://www.wacken.com/fileadmin/_processed_/7/7/csm_woa_26_bandposter_260508_fb-pageheader_1640x924_f60009192b.jpg"
     }
 
     cardTitle() {

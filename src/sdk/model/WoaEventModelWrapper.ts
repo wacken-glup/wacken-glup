@@ -23,11 +23,12 @@ export default class WoaEventModelWrapper extends BaseCardDataModel {
         for(let artist of this.data.artists) {
             for(let asset of artist.assets) {
                 if(asset.thumbnail == null) continue
+                if(!asset.thumbnail) continue 
                 return `https://wacken.com${ asset.thumbnail }`
             }
         }
         
-        return "https://www.metal-hammer.de/wp-content/uploads/2024/02/10/10/wacken-2024-725x1024.jpg"
+        return "https://www.wacken.com/fileadmin/_processed_/7/7/csm_woa_26_bandposter_260508_fb-pageheader_1640x924_f60009192b.jpg"
     }
 
     cardTitle() {
