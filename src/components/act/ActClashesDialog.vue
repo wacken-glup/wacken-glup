@@ -86,10 +86,9 @@ export default {
                 </nav>
                 
                 <div class="grid">
-                    <div v-for="model in clash.events" class="s12 m6 l4">
+                    <div v-for="model in clash.events" class="s12 m6 l6">
                         <BigActCard
-                            :model="model"
-                            style="max-width: 300px">
+                            :model="model">
                         </BigActCard>
                     </div>
                 </div>
