@@ -76,7 +76,7 @@ export default {
         </template>
     </AppBar>
 
-    <main class="responsive max">
+    <main class="responsive max" style="width: 100%">
         <template v-if="$client.container.festival.value?.runningOrderActive && !hasFestivalEnded">
             <EventsTable :filterStages="finalFilteredStageIds" />
         </template>
