@@ -123,9 +123,9 @@ export default {
         </template>
 
         <div class="absolute bottom right" style="bottom: 24px; right: 24px;">
-            <button class="extend square round" @click="openClashesDialog()">
+            <button class="round extra" @click="openClashesDialog()">
                 <i>swords</i>
-                <span>Clashes</span>
+                <span>{{ $t("common.clashes") }}</span>
             </button>
         </div>
     </main>
