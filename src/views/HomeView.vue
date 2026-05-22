@@ -181,7 +181,7 @@ export default {
         </nav>
     </dialog>
 
-    <ActClashesDialog :open="$route.query.clashes" @dismiss="$router.back()" />
+    <ActClashesDialog :open="$route.query.clashes == 'true'" @dismiss="$router.back()" />
 </template>
 
 <style>

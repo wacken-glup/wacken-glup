@@ -1,4 +1,5 @@
 <script lang="ts">
+import type { Clash } from "@/sdk/model/Clash"
 import BigActCard from "@/components/act/BigActCard.vue"
 
 export default {
@@ -7,17 +8,17 @@ export default {
     },
     data() {
         return {
-            clashes: [] = []
+            clashes: [] = [] as Clash[]
         }
     },
     watch: {
         open() {
-            const clashes = []
+            const clashes: Clash[] = []
 
             this.$client.container.eventsByDayUid.value.forEach(events => {
                 var relevantEvents = events.filter(e => (e.likerIds.length > 0 || e.suggestorIds.length > 0))
 
-                const alreadyFound = []
+                const alreadyFound: string[] = []
                 relevantEvents.forEach(event => {
                     if(alreadyFound.includes(event.uid)) return
 
