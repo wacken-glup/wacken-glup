@@ -1,6 +1,7 @@
 <script lang="ts">
 import AppBar from "@/components/AppBar.vue"
 import EventsTable from "@/components/table/EventsTable.vue"
+import ActClashesDialog from "@/components/act/ActClashesDialog.vue"
 
 import delay from "delay"
 
@@ -32,6 +33,14 @@ export default {
                     ... this.$route.query
                 }
             })
+        },
+        openClashesDialog() {
+            this.$router.push({
+                query: {
+                    clashes: "true",
+                    ... this.$route.query
+                }
+            })
         }
     },
     mounted() {
@@ -59,7 +68,7 @@ export default {
             if(this.save) localStorage.setItem("filterStages", JSON.stringify(this.finalFilteredStageIds))
         }
     },
-    components: { AppBar, EventsTable }
+    components: { AppBar, EventsTable, ActClashesDialog }
 }
 </script>
 
@@ -112,6 +121,13 @@ export default {
                 </article>
             </div>
         </template>
+
+        <div class="absolute bottom right" style="bottom: 24px; right: 24px;">
+            <button class="extend square round" @click="openClashesDialog()">
+                <i>swords</i>
+                <span>Clashes</span>
+            </button>
+        </div>
     </main>
 
     <div class="overlay" :class="{ active: $route.query.dialogFilterStages }" @click="$router.back()"></div>
@@ -164,6 +180,8 @@ export default {
             </button>
         </nav>
     </dialog>
+
+    <ActClashesDialog :open="$route.query.clashes" @dismiss="$router.back()" />
 </template>
 
 <style>

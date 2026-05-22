@@ -59,7 +59,8 @@
         "recommended": "Vorgeschlagen",
         "details": "Details",
         "until": "bis",
-        "showActs": "Acts anzeigen"
+        "showActs": "Acts anzeigen",
+        "clashes": "Clashes"
     },
     "join": {
         "title": "Space beitreten",
@@ -160,6 +161,9 @@
                 "title": "Charts"
             }
         }
+    },
+    "clashes": {
+        "numberOfClashes": "Anzahl an Clashes:"
     },
     "settings": {
         "spaceSettings": {

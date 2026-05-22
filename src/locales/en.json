@@ -59,7 +59,8 @@
         "recommended": "Recommended",
         "details": "Details",
         "until": "until",
-        "showActs": "Show acts"
+        "showActs": "Show acts",
+        "clashes": "Clashes"
     },
     "join": {
         "title": "Join space",
@@ -160,6 +161,9 @@
                 "title": "Charts"
             }
         }
+    },
+    "clashes": {
+        "numberOfClashes": "Number of clashes:"
     },
     "settings": {
         "spaceSettings": {
