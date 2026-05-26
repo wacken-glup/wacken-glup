@@ -163,6 +163,10 @@
         }
     },
     "clashes": {
+        "groupClashes": {
+            "label": "Show group conflicts",
+            "description": "Include schedule conflicts for acts liked by your friends"
+        },
         "numberOfClashes": "Number of clashes:"
     },
     "settings": {

@@ -8,15 +8,26 @@ export default {
     },
     data() {
         return {
-            clashes: [] = [] as Clash[]
+            clashes: [] = [] as Clash[],
+            groupClashes: true
         }
     },
-    watch: {
-        open() {
+    methods: {
+        render() {
+            if(!this.$client.space?.self) {
+                this.$emit("dismiss")
+                return
+            }
+
             const clashes: Clash[] = []
 
             this.$client.container.eventsByDayUid.value.forEach(events => {
-                var relevantEvents = events.filter(e => (e.likerIds.length > 0 || e.suggestorIds.length > 0))
+                var relevantEvents;
+                if(this.groupClashes) {
+                    relevantEvents = events.filter(e => (e.likerIds.length > 0 || e.suggestorIds.length > 0))
+                }else{
+                    relevantEvents = events.filter(e => (this.$client.space?.self?.isSuggested(e.uid) || this.$client.space?.self?.isSuggested(e.uid)))
+                }
 
                 const alreadyFound: string[] = []
                 relevantEvents.forEach(event => {
@@ -55,6 +66,16 @@ export default {
             this.clashes = clashes
         }
     },
+    watch: {
+        open() {
+            this.groupClashes = localStorage.getItem("groupClashes") != "false"
+            this.render()
+        },
+        groupClashes() {
+            localStorage.setItem("groupClashes", this.groupClashes+"")
+            this.render()
+        }
+    },
     emits: [ "dismiss" ],
     components: { BigActCard }
 }
@@ -75,6 +96,22 @@ export default {
                 <h5 class="max">{{ $t("common.clashes") }}</h5>
             </nav>
         </header>
+
+        <div class="field prefix middle-align" @click="groupClashes = !groupClashes">
+            <nav>
+                <i>group</i>
+
+                <div class="max">
+                    <h6>{{ $t("clashes.groupClashes.label") }}</h6>
+                    <div>{{ $t("clashes.groupClashes.description") }}</div>
+                </div>
+                
+                <label class="switch">
+                    <input type="checkbox" v-model="groupClashes" @click="groupClashes = !groupClashes">
+                    <span></span>
+                </label>
+            </nav>
+        </div>
 
         <p style="text-align: center;">{{ $t("clashes.numberOfClashes") }} <b>{{ clashes.length }}</b></p>
 

@@ -163,6 +163,10 @@
         }
     },
     "clashes": {
+        "groupClashes": {
+            "label": "Gruppen-Überschneidungen anzeigen",
+            "description": "Zeigt zeitliche Konflikte für Bands an, die deine Freunde markiert haben"
+        },
         "numberOfClashes": "Anzahl an Clashes:"
     },
     "settings": {
