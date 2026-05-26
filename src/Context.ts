@@ -23,6 +23,7 @@ export default class Context {
 
     loaded = ref<Boolean>(false)
     authLoaded = ref<Boolean>(false)
+    dataLoaded = ref<Boolean>(false)
 
     showOfflineButton = ref<Boolean>(false)
 

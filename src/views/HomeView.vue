@@ -13,6 +13,8 @@ export default {
             filteredStageIds: [] as number[],
             finalFilteredStageIds: [] as number[],
 
+            hideUnusedStages: false,
+
             save: false,
             
             hasFestivalEnded: false
@@ -52,6 +54,8 @@ export default {
             console.error(e)
         }
 
+        this.hideUnusedStages = localStorage.getItem("hideUnusedStages") == "true";
+
         (async() => {
             while(this.$client.space?.loaded != true) await delay(50)
             this.loaded = true
@@ -59,6 +63,11 @@ export default {
 
         let festivalEnd = Math.max(... this.$client.container.events.map(e => e.end)) * 1000
         this.hasFestivalEnded = Date.now() > festivalEnd
+    },
+    watch: {
+        hideUnusedStages() {
+            localStorage.setItem("hideUnusedStages", this.hideUnusedStages+"")
+        }
     },
     beforeRouteUpdate(to, from) {
         if(from.query.dialogFilterStages && !to.query.dialogFilterStages) {
@@ -87,7 +96,7 @@ export default {
 
     <main class="responsive max" style="width: 100%">
         <template v-if="$client.container.festival.value?.runningOrderActive && !hasFestivalEnded">
-            <EventsTable :filterStages="finalFilteredStageIds" />
+            <EventsTable :filterStages="finalFilteredStageIds" :hideUnusedStages="hideUnusedStages" />
         </template>
 
         <!-- show info when running order isn't available -->
@@ -135,7 +144,21 @@ export default {
     <dialog :class="{ active: $route.query.dialogFilterStages }">
         <h5>{{ $t("home.dialog.filterStages.title") }}</h5>
         
-        <article>
+        <div class="field middle-align" @click="hideUnusedStages = !hideUnusedStages">
+            <nav>
+                <div class="max">
+                    <h6>{{ $t("home.dialog.filterStages.hideUnused.title") }}</h6>
+                    <div>{{ $t("home.dialog.filterStages.hideUnused.description") }}</div>
+                </div>
+
+                <label class="switch">
+                    <input type="checkbox" :checked="hideUnusedStages" @click="hideUnusedStages = !hideUnusedStages">
+                    <span></span>
+                </label>
+            </nav>
+        </div>
+
+        <article v-if="!hideUnusedStages">
             <template v-for="stage of $client.container.stages.value">
                 <div class="space"></div>
 

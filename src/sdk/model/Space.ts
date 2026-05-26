@@ -178,6 +178,7 @@ export default class Space {
 
             this.publishMembersToContainer()
             this.loaded.value = true
+            this.ctx.dataLoaded.value = true
 
             this.updateCache()
         })

@@ -17,7 +17,8 @@ export default {
         filterStages: {
             type: Object as PropType<number[]>,
             default: []
-        }
+        },
+        hideUnusedStages: Boolean
     },
     data() {
         return {
@@ -55,8 +56,24 @@ export default {
             this.timeCells = timeCells
             this.columns = []
 
+            let shownStages = []
+            if(this.hideUnusedStages) {
+                for(let event of this.$client.container.events) {
+                    if(shownStages.includes(event.data.stage.uid)) continue
+                    if(event.data.festivalday.uid !== this.selectedDay?.uid) continue
+                    if(event.likerIds.length == 0 && event.suggestorIds.length == 0) continue
+                    shownStages.push(event.data.stage.uid)
+                }
+            }
+
             for(let stage of this.$client.container.stages.value) {
-                if(this.filterStages.includes(stage.uid)) continue
+                if(this.hideUnusedStages) {
+                    if(!shownStages.includes(stage.uid)) {
+                        continue
+                    }
+                }else if(this.filterStages.includes(stage.uid)) {
+                    continue
+                }
 
                 let column: Column = {
                     startOffset: 0,
@@ -151,6 +168,11 @@ export default {
 
         this.render()
     },
+    computed: {
+        isDataLoaded() {
+          return this.$ctx?.dataLoaded?.value;
+        }
+    },
     watch: {
         "selectedDay"() {
             this.render()
@@ -164,6 +186,9 @@ export default {
             ui("#events-table-day-selector")
         },
         "filterStages"() {
+            this.render()
+        },
+        isDataLoaded() {
             this.render()
         }
     },
@@ -242,7 +267,11 @@ export default {
                 </template>
             </tbody>
 
-            <br><br><br>
+            <tfoot class="fixed">
+                <br>
+                <p v-if="hideUnusedStages" class="italic">{{ $t("home.unusedStagesHidden") }}</p>
+                <br>
+            </tfoot>
         </table>
     </div>
 </template>

@@ -111,9 +111,14 @@
             "title": "The festival is over",
             "message": "See you in Wacken — Rain or Shine 🤘"
         },
+        "unusedStagesHidden": "You have hidden all stages without liked or suggested acts.",
         "dialog": {
             "filterStages": {
                 "title": "Filter stages",
+                "hideUnused": {
+                    "title": "Hide unused stages",
+                    "description": "Hide stages without liked or suggested acts"
+                },
                 "save": {
                     "title": "Save",
                     "description": "Also apply on next visit"

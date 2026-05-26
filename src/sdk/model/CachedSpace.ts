@@ -26,6 +26,7 @@ export class CachedSpace {
             for(let memberData of dataJs.members) this.space.members.push(this.createMember(memberData) as any)
             this.space.publishMembersToContainer()
 
+            this.ctx.dataLoaded.value = true
             this.space.loaded.value = true
             this.space.cached.value = true
         }else{
