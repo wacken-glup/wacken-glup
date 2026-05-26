@@ -1,4 +1,5 @@
 <script lang="ts">
+import type WoaEventModelWrapper from "@/sdk/model/WoaEventModelWrapper"; 
 import type { Clash } from "@/sdk/model/Clash"
 import BigActCard from "@/components/act/BigActCard.vue"
 
@@ -22,7 +23,7 @@ export default {
             const clashes: Clash[] = []
 
             this.$client.container.eventsByDayUid.value.forEach(events => {
-                var relevantEvents;
+                var relevantEvents: WoaEventModelWrapper[] = []
                 if(this.groupClashes) {
                     relevantEvents = events.filter(e => (e.likerIds.length > 0 || e.suggestorIds.length > 0))
                 }else{

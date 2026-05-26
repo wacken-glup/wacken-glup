@@ -56,7 +56,7 @@ export default {
             this.timeCells = timeCells
             this.columns = []
 
-            let shownStages = []
+            let shownStages: number[] = []
             if(this.hideUnusedStages) {
                 for(let event of this.$client.container.events) {
                     if(shownStages.includes(event.data.stage.uid)) continue
