@@ -53,11 +53,11 @@ export default {
 
                 <h5 class="max">{{ $t("common.details") }}</h5>
 
-                <button class="transparent circle" @click="toggleSuggested()">
-                    <i class="ignore-hover-fill" :class="{ fill: $client.space?.self?.isSuggested(model.uid), 'primary-text': $client.space?.self?.isSuggested(model.uid) }">thumb_up</i>
+                <button class="transparent circle" @click="toggleSuggested()" v-if="!$client.space?.self?.isLiked(model.uid) || $client.space?.self?.isSuggested(model.uid)"> <!-- include second condition because it was previously possible to both suggest and like -->
+                    <i class="ignore-hover-fill" :class="{ fill: $client.space?.self?.isSuggested(model.uid), 'primary-text': $client.space?.self?.isSuggested(model.uid) }">thumb_up</i> 
                 </button>
 
-                <button class="transparent circle" @click="toggleLike()">
+                <button class="transparent circle" @click="toggleLike()" v-if="!$client.space?.self?.isSuggested(model.uid) || $client.space?.self?.isLiked(model.uid)"> <!-- include second condition because it was previously possible to both suggest and like -->
                     <i class="ignore-hover-fill" :class="{ fill: $client.space?.self?.isLiked(model.uid), 'primary-text': $client.space?.self?.isLiked(model.uid) }">favorite</i>
                 </button>
 
